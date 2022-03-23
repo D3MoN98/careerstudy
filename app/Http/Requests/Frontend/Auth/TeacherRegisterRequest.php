@@ -29,7 +29,7 @@ class TeacherRegisterRequest extends FormRequest
             'last_name'           => ['required', 'string', 'max:191'],
             'email'               => ['required', 'string', 'email', 'max:191', Rule::unique('users')],
             'password'            => ['required', 'string', 'min:6', 'confirmed'],
-            'gender'              => ['required', 'in:male,female,other'],
+            // 'gender'              => ['required', 'in:male,female,other'],
             'facebook_link'       => ['nullable', 'url'],
             'twitter_link'        => ['nullable', 'url'],
             'linkedin_link'       => ['nullable', 'url'],

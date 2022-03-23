@@ -8,7 +8,7 @@
         <div class="container">
             <div class="page-breadcrumb-content text-center">
                 <div class="page-breadcrumb-title">
-                    <h2 class="breadcrumb-head black bold">{{__('labels.teacher.teacher_register_box_title')}}</h2>
+                    <h2 class="breadcrumb-head black bold">{{ __('labels.teacher.teacher_register_box_title') }}</h2>
                 </div>
             </div>
         </div>
@@ -19,6 +19,26 @@
                 <div class="col-sm-12">
                     <div class="card  border-0">
                         <div class="card-body">
+
+                            <div class="stepper-wrapper">
+                                <div class="stepper-item active">
+                                    <div class="step-counter">1</div>
+                                    <div class="step-name">Personal Details</div>
+                                </div>
+                                <div class="stepper-item">
+                                    <div class="step-counter">2</div>
+                                    <div class="step-name">Email Verfification</div>
+                                </div>
+                                <div class="stepper-item">
+                                    <div class="step-counter">3</div>
+                                    <div class="step-name">KYC Verfification</div>
+                                </div>
+                                <div class="stepper-item">
+                                    <div class="step-counter">4</div>
+                                    <div class="step-name">Approve</div>
+                                </div>
+                            </div>
+
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul class="list-inline list-style-none">
@@ -42,84 +62,84 @@
                                     <div class="form-group">
                                         {{ html()->label(__('validation.attributes.frontend.first_name'))->for('first_name') }}
 
-                                        {{ html()->text('first_name')
-                                            ->class('form-control')
-                                            ->placeholder(__('validation.attributes.frontend.first_name'))
-                                            ->attribute('maxlength', 191)
-                                            ->required() }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->text('first_name')->class('form-control')->placeholder(__('validation.attributes.frontend.first_name'))->attribute('maxlength', 191)->required() }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         {{ html()->label(__('validation.attributes.frontend.last_name'))->for('last_name') }}
 
-                                        {{ html()->text('last_name')
-                                            ->class('form-control')
-                                            ->placeholder(__('validation.attributes.frontend.last_name'))
-                                            ->attribute('maxlength', 191)
-                                            ->required() }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->text('last_name')->class('form-control')->placeholder(__('validation.attributes.frontend.last_name'))->attribute('maxlength', 191)->required() }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         {{ html()->label(__('validation.attributes.frontend.email'))->for('email') }}
 
-                                        {{ html()->email('email')
-                                            ->class('form-control')
-                                            ->placeholder(__('validation.attributes.frontend.email'))
-                                            ->attribute('maxlength', 191)
-                                            ->required() }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->email('email')->class('form-control')->placeholder(__('validation.attributes.frontend.email'))->attribute('maxlength', 191)->required() }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         {{ html()->label(__('validation.attributes.frontend.password'))->for('password') }}
 
-                                        {{ html()->password('password')
-                                            ->class('form-control')
-                                            ->placeholder(__('validation.attributes.frontend.password'))
-                                            ->required() }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->password('password')->class('form-control')->placeholder(__('validation.attributes.frontend.password'))->required() }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         {{ html()->label(__('validation.attributes.frontend.password_confirmation'))->for('password_confirmation') }}
 
-                                        {{ html()->password('password_confirmation')
-                                            ->class('form-control')
-                                            ->placeholder(__('validation.attributes.frontend.password_confirmation'))
-                                            ->required() }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->password('password_confirmation')->class('form-control')->placeholder(__('validation.attributes.frontend.password_confirmation'))->required() }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         {{ html()->label(__('labels.backend.teachers.fields.image'))->class('form-control-label')->for('image') }}
 
                                         {!! Form::file('image', ['class' => 'form-control d-inline-block', 'placeholder' => '']) !!}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        {{ html()->label(__('labels.backend.general_settings.user_registration_settings.fields.gender'))->for('password_confirmation') }} :
+                                        {{ html()->label(__('labels.backend.general_settings.user_registration_settings.fields.gender'))->for('password_confirmation') }}
+                                        :
                                         <div class="form-control">
                                             <label class="radio-inline mr-3 mb-0">
-                                                <input type="radio" name="gender" value="male"> {{__('validation.attributes.frontend.male')}}
+                                                <input type="radio" name="gender" value="male">
+                                                {{ __('validation.attributes.frontend.male') }}
                                             </label>
                                             <label class="radio-inline mr-3 mb-0">
-                                                <input type="radio" name="gender" value="female"> {{__('validation.attributes.frontend.female')}}
+                                                <input type="radio" name="gender" value="female">
+                                                {{ __('validation.attributes.frontend.female') }}
                                             </label>
                                             <label class="radio-inline mr-3 mb-0">
-                                                <input type="radio" name="gender" value="other"> {{__('validation.attributes.frontend.other')}}
+                                                <input type="radio" name="gender" value="other">
+                                                {{ __('validation.attributes.frontend.other') }}
                                             </label>
                                         </div>
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
 
                                 <div class="col-12  mt-3 mb-2">
@@ -130,35 +150,36 @@
                                     <div class="form-group">
                                         {{ html()->label(__('labels.teacher.facebook_link')) }}
 
-                                        {{ html()->text('facebook_link')
-                                            ->class('form-control')
-                                            ->placeholder(__('labels.teacher.facebook_link')) }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->text('facebook_link')->class('form-control')->placeholder(__('labels.teacher.facebook_link')) }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         {{ html()->label(__('labels.teacher.twitter_link')) }}
 
-                                        {{ html()->text('twitter_link')
-                                            ->class('form-control')
-                                            ->placeholder(__('labels.teacher.twitter_link')) }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->text('twitter_link')->class('form-control')->placeholder(__('labels.teacher.twitter_link')) }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         {{ html()->label(__('labels.teacher.linkedin_link')) }}
 
-                                        {{ html()->text('linkedin_link')
-                                            ->class('form-control')
-                                            ->placeholder(__('labels.teacher.linkedin_link')) }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
+                                        {{ html()->text('linkedin_link')->class('form-control')->placeholder(__('labels.teacher.linkedin_link')) }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
 
-                            </div><!--row-->
+                            </div>
+                            <!--row-->
 
 
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-12 mt-3 mb-2">
                                     <h3>{{ __('validation.attributes.frontend.payment_information') }}</h3>
                                 </div>
@@ -172,9 +193,9 @@
                                         </select>
                                     </div><!--form-group-->
                                 </div><!--col-->
-                            </div><!--row-->
+                            </div><!--row--> --}}
 
-                            <div class="bank_details">
+                            {{-- <div class="bank_details">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -216,9 +237,9 @@
                                         </div><!--form-group-->
                                     </div><!--col-->
                                 </div><!--row-->
-                            </div>
+                            </div> --}}
 
-                            <div class="paypal_details">
+                            {{-- <div class="paypal_details">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
@@ -230,28 +251,33 @@
                                         </div><!--form-group-->
                                     </div><!--col-->
                                 </div><!--row-->
-                            </div>
+                            </div> --}}
 
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
                                         {{ html()->label(__('labels.teacher.description')) }}
 
-                                        {{ html()->textarea('description')
-                                            ->class('form-control')
-                                            ->placeholder(__('labels.teacher.description')) }}
-                                    </div><!--form-group-->
-                                </div><!--col-->
-                            </div><!--row-->
+                                        {{ html()->textarea('description')->class('form-control')->placeholder(__('labels.teacher.description')) }}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
+                            </div>
+                            <!--row-->
 
 
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group mb-0 text-center mt-4 clearfix">
-                                        <button class="btn btn-info mx-auto btn-lg" type="submit">{{__('labels.frontend.modal.register_now')}}</button>
-                                    </div><!--form-group-->
-                                </div><!--col-->
-                            </div><!--row-->
+                                        <button class="btn btn-info mx-auto btn-lg"
+                                            type="submit">{{ __('labels.frontend.modal.register_now') }}</button>
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
+                            </div>
+                            <!--row-->
                             {{ html()->form()->close() }}
                         </div><!-- card-body -->
                     </div><!-- card -->
@@ -261,30 +287,30 @@
     </section>
 @endsection
 @push('after-scripts')
-@if(old('payment_method') && old('payment_method') == 'bank')
-<script>
-    $('.paypal_details').hide();
-    $('.bank_details').show();
-</script>
-@elseif(old('payment_method') && old('payment_method') == 'paypal')
-<script>
-    $('.paypal_details').show();
-    $('.bank_details').hide();
-</script>
-@else
-<script>
-    $('.paypal_details').hide();
-</script>
-@endif
-<script>
-    $(document).on('change', '#payment_method', function(){
-        if($(this).val() === 'bank'){
+    @if (old('payment_method') && old('payment_method') == 'bank')
+        <script>
             $('.paypal_details').hide();
             $('.bank_details').show();
-        }else{
+        </script>
+    @elseif(old('payment_method') && old('payment_method') == 'paypal')
+        <script>
             $('.paypal_details').show();
             $('.bank_details').hide();
-        }
-    });
-</script>
+        </script>
+    @else
+        <script>
+            $('.paypal_details').hide();
+        </script>
+    @endif
+    <script>
+        $(document).on('change', '#payment_method', function() {
+            if ($(this).val() === 'bank') {
+                $('.paypal_details').hide();
+                $('.bank_details').show();
+            } else {
+                $('.paypal_details').show();
+                $('.bank_details').hide();
+            }
+        });
+    </script>
 @endpush

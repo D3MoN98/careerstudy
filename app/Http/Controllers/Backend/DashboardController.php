@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Review;
+use Auth;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

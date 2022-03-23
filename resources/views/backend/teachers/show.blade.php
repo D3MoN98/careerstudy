@@ -42,6 +42,16 @@
                             <td>{!! $teacher->status_label !!}</td>
                         </tr>
                         <tr>
+                            <th>Verifeid</th>
+                            <td>
+                                @if ($teacher->teacherProfile->approved)
+                                <span class="badge badge-success">Verified</span>
+                                @else
+                                <span class="badge badge-warning">Not Verified</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
                             <th>@lang('labels.backend.general_settings.user_registration_settings.fields.gender')</th>
                             <td>{!! $teacher->gender !!}</td>
                         </tr>
@@ -62,6 +72,38 @@
                             <td>{!! $teacherProfile->linkedin_link !!}</td>
                         </tr>
                         <tr>
+                            <th>@lang('labels.teacher.subject_specialist')</th>
+                            <td>{!! $teacherProfile->subject_specialist !!}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('labels.teacher.qualification_details')</th>
+                            <td>{!! $teacherProfile->qualification_details !!}</td>
+                        </tr> 
+                        <tr>
+                            <th>@lang('labels.teacher.teaching_details')</th>
+                            <td>{!! $teacherProfile->teaching_details !!}</td>
+                        </tr>  
+                        <tr>
+                            <th>@lang('labels.teacher.profile_photo')</th>
+                            <td><a href="{!! url('storage/'.$teacherProfile->profile_photo) !!}" target="_blank">View</a></td>
+                        </tr>  
+                        <tr>
+                            <th>@lang('labels.teacher.signature')</th>
+                            <td><a href="{!! url('storage/'.$teacherProfile->signature) !!}" target="_blank">View</a></td>
+                        </tr>  
+                        <tr>
+                            <th>@lang('labels.teacher.qualification_certificate')</th>
+                            <td><a href="{!! url('storage/'.$teacherProfile->qualification_certificate) !!}" target="_blank">View</a></td>
+                        </tr>
+                        <tr>
+                            <th>@lang('labels.teacher.bank_passbook')</th>
+                            <td><a href="{!! url('storage/'.$teacherProfile->bank_passbook) !!}" target="_blank">View</a></td>
+                        </tr>
+                        <tr>
+                            <th>@lang('labels.teacher.resume')</th>
+                            <td><a href="{!! url('storage/'.$teacherProfile->resume) !!}" target="_blank">View</a></td>
+                        </tr>
+                        <tr>
                             <th>@lang('labels.teacher.payment_details')</th>
                             <td>{!! $teacherProfile->payment_method !!}</td>
                         </tr>
@@ -71,7 +113,7 @@
                             <td>{!! $payment_details->bank_name !!}</td>
                         </tr>
                         <tr>
-                            <th>@lang('labels.teacher.bank_details.bank_code')</th>
+                            <th>@lang('labels.teacher.bank_details.ifsc_code')</th>
                             <td>{!! $payment_details->ifsc_code !!}</td>
                         </tr>
                         <tr>

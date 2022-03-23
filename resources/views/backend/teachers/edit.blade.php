@@ -211,7 +211,18 @@
                                 ->class('switch switch-lg switch-3d switch-primary')
                             }}
                         </div>
+                    </div>
 
+                    <div class="form-group row">
+                        {{ html()->label(__('labels.backend.teachers.fields.approved'))->class('col-md-2 form-control-label')->for('approved') }}
+                        <div class="col-md-10">
+                            {{ html()->label(html()->checkbox('')->name('approved')
+                                        ->checked($teacherProfile->approved)->class('switch-input')->value($teacherProfile->approved ? 0 : 1)
+
+                                    . '<span class="switch-label"></span><span class="switch-handle"></span>')
+                                ->class('switch switch-lg switch-3d switch-primary')
+                            }}
+                        </div>
                     </div>
 
 

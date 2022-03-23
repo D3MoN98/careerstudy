@@ -13,7 +13,28 @@ class TeacherProfile extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'facebook_link', 'twitter_link', 'linkedin_link', 'payment_method', 'payment_details', 'description'
+        'user_id',
+        'facebook_link',
+        'twitter_link',
+        'linkedin_link',
+        'payment_method',
+        'payment_details',
+        'description',
+        'subject_specialist',
+        'qualification_details',
+        'teaching_details',
+        'profile_photo',
+        'signature',
+        'qualification_certificate',
+        'bank_passbook',
+        'resume',
+        'kyc_submitted',
+        'approved'
+    ];
+
+    protected $casts = [
+        'kyc_submitted' => 'boolean',
+        'approved' => 'boolean'
     ];
 
     /**

@@ -37,6 +37,14 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
             Route::get('password/expired', [PasswordExpiredController::class, 'expired'])->name('password.expired');
             Route::patch('password/expired', [PasswordExpiredController::class, 'update'])->name('password.expired.update');
         }
+
+        // teacher verification
+        Route::get('teacher/register/kyc-verification',[TeacherRegisterController::class, 'showTeacherKycRegistrationForm'])->name('teacher.register.kyc');
+        Route::post('teacher/register/kyc', [TeacherRegisterController::class, 'registerTeacher'])->name('teacher.register.kyc.post');
+        Route::get('teacher/register/approve',[TeacherRegisterController::class, 'showTeacherApproveRegistration'])->name('teacher.register.approve');
+        Route::get('teacher/register/confirm_email',[TeacherRegisterController::class, 'showTeacherConfirmEmailRegistration'])->name('teacher.register.confirm_email');
+
+
     });
 
     /*
@@ -58,7 +66,6 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
         }
 
         // Confirm Account Routes
-        Route::get('account/confirm/{token}', [ConfirmAccountController::class, 'confirm'])->name('account.confirm');
         Route::get('account/confirm/resend/{uuid}', [ConfirmAccountController::class, 'sendConfirmationEmail'])->name('account.confirm.resend');
 
         // Password Reset Routes
@@ -73,4 +80,7 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
         Route::post('teacher/register', [TeacherRegisterController::class, 'register'])->name('teacher.register.post');
 
     });
+
+    // Confirm Account Routes
+    Route::get('account/confirm/{token}', [ConfirmAccountController::class, 'confirm'])->name('account.confirm');
 });

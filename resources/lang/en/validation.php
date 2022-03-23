@@ -29,6 +29,17 @@ return array (
       'personal_information' => 'Personal Information',
       'social_information' => 'Social Information',
       'payment_information' => 'Payment Information',
+      'kyc_information' => 'Kyc Information',
+      'subject_specialist' => 'Subject Specialist',
+      'qualification_details' => 'Qualification Details',
+      'teaching_details' => 'Teaching College / Uuniversity or other course',
+      'upi_id' => 'Upi ID (If have any)',
+      'upload_documents' => 'Upload Documents',
+      'profile_photo' => 'Profile photo',
+      'signature' => 'signature',
+      'qualification_certificate' => 'Highest qualification marksheet and certificate',
+      'bank_passbook' => 'Bank Passbook',
+      'resume' => 'Resume / Cv/ Biodata',
     ),
     'backend' => 
     array (

@@ -10,6 +10,7 @@ use App\Models\Auth\User;
 use App\Models\TeacherProfile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\Backend\Auth\TeacherApproved;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\DataTables;
 
@@ -196,9 +197,13 @@ class TeachersController extends Controller
             'payment_method'    => request()->payment_method,
             'payment_details'   => json_encode($payment_details),
             'description'       => request()->description,
+            'approved'       => request()->approved,
         ];
         $teacher->teacherProfile->update($data);
 
+        if ($teacher->teacherProfile->fresh()->approved && request()->approved == 1) {
+            $teacher->notify(new TeacherApproved());
+        }
 
         return redirect()->route('admin.teachers.index')->withFlashSuccess(trans('alerts.backend.general.updated'));
     }
