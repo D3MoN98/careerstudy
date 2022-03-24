@@ -28,6 +28,10 @@
         width: 100%;
         border: none
     }
+    .select2.select2-container{
+        width: 100%!important;
+    }
+
 
     @media (max-width: 768px) {
         .modal-dialog {
@@ -47,7 +51,7 @@
 ?>
 @if(!auth()->check())
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="myModal" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -201,6 +205,40 @@
                                     @endforeach
                                 @endif
 
+                                <div class="contact-info mb-2">
+                                    @php
+                                        $colleges = App\Models\College::all();
+                                    @endphp
+                                    <select name="college_id" class="form-control mb-0 select2-tag-college">
+                                        <option></option>
+                                        @foreach ($colleges as $college)
+                                        <option value="{{ $college->id }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
+                                <div class="contact-info mb-2">
+                                    @php
+                                        $college_streams = App\Models\CollegeStream::all();
+                                    @endphp
+                                    <select name="college_stream_id" class="form-control select2-tag-college-stream">
+                                        <option></option>
+                                        @foreach ($college_streams as $college_stream)
+                                        <option value="{{ $college_stream->id }}">{{ $college_stream->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="contact-info mb-2">
+                                    <select name="semester" id="" class="form-control">
+                                        <option>Semester</option>
+                                        @for ($i = 1; $i <= 8; $i++)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+
                                 @if(config('access.captcha.registration'))
                                     <div class="contact-info mt-3 text-center">
                                         {{ no_captcha()->display() }}
@@ -244,6 +282,34 @@
         {{ no_captcha()->script() }}
 
     @endif
+
+    <script>
+        $(document).ready(function() {
+            $(".select2-tag-college").select2({
+                dropdownParent: $("#myModal  .modal-content"),
+                tags: true,
+                placeholder: "Select a college"
+            });
+            
+            $(".select2-tag-college-stream").select2({
+                dropdownParent: $("#myModal  .modal-content"),
+                tags: true,
+                placeholder: "Select a stream"
+            });
+        });
+
+        // $(document).ready(function() { 
+
+        //     $('.select2-tag-college').select2({
+        //         dropdownParent: $("#myModal"),
+        //     });
+        // });
+        
+        // $('.select2-tag-college-stream').select2({
+        //     tags: true,
+        //     placeholder: 'Choose a stream'
+        // });
+    </script>
 
     <script>
         $(function () {

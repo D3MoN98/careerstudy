@@ -82,6 +82,18 @@
                             <td>{{ $course->category->name }}</td>
                         </tr>
                         <tr>
+                            <th>College</th>
+                            <td>{{ $course->college->name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stream</th>
+                            <td>{{ $course->college_stream->name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Semester</th>
+                            <td>{{ $course->semester }}</td>
+                        </tr>
+                        <tr>
                             <th>@lang('labels.backend.courses.fields.description')</th>
                             <td>{!! $course->description !!}</td>
                         </tr>

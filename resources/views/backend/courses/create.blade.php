@@ -40,6 +40,55 @@
             </div>
 
             <div class="row">
+                <div class="col-12 form-group">
+                    <label class="control-label">
+                        College
+                    </label>
+                    <select name="college_id" id="" class="form-control select2-tag">
+                        @foreach ($colleges as $college)
+                        <option value="{{ $college->id }}">{{ $college->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-12 form-group">
+                    <label class="control-label">
+                        Stream
+                    </label>
+                    <select name="college_stream_id" id="" class="form-control select2-tag">
+                        @foreach ($college_streams as $college_stream)
+                        <option value="{{ $college_stream->id }}">{{ $college_stream->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-12 form-group">
+                    <label class="control-label">
+                        Semester
+                    </label>
+                    <select name="semester" id="" class="form-control">
+                        @for ($i = 1; $i <= 8; $i++)
+                        <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    <label class="control-label">
+                        Filter by
+                    </label>
+                    <select name="filter_by" id="" class="form-control">
+                        <option value="college">College</option>
+                        <option value="category">Category</option>
+                        <option value="all">All</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('title', trans('labels.backend.courses.fields.title').' *', ['class' => 'control-label']) !!}
                     {!! Form::text('title', old('title'), ['class' => 'form-control', 'placeholder' => trans('labels.backend.courses.fields.title'), 'required' => false]) !!}
@@ -221,6 +270,14 @@
 
             $(".js-example-placeholder-multiple").select2({
                 placeholder: "{{trans('labels.backend.courses.select_teachers')}}",
+            });
+            
+            $(".select2-tag-college").select2({
+                placeholder: "Select a college",
+            });
+            
+            $(".select2-tag-stream").select2({
+                placeholder: "Select a stream",
             });
         });
 

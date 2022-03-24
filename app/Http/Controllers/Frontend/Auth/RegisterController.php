@@ -8,6 +8,9 @@ use App\Helpers\Frontend\Auth\Socialite;
 use App\Events\Frontend\Auth\UserRegistered;
 use App\Mail\Frontend\Auth\AdminRegistered;
 use App\Models\Auth\User;
+use App\Models\College;
+use App\Models\CollegeStream;
+use App\Models\Student;
 use Arcanedev\NoCaptcha\Rules\CaptchaRule;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -70,6 +73,8 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        $res = $this->sendOtp('6291839827');
+        return response(['success' => $res]);
 
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
@@ -120,11 +125,78 @@ class RegisterController extends Controller
         $userForRole->save();
         $userForRole->assignRole('student');
 
+        // send otp
+        $this->sendOtp($user->phone);
+
+        // college details
+        if (!is_int($data['college_id']) && !College::find($data['college_id'])) {
+            $college = College::where('name', $data['college_id'])->first();
+            if(!$college) {
+                $college = College::create([
+                    'name' => $data['college_id']
+                ]);
+
+            } 
+            $data['college_id'] = $college->id;
+        }
+        
+        if (!is_int($data['college_stream_id']) && !CollegeStream::find($data['college_stream_id'])) {
+            $college_stream = CollegeStream::where('name', $data['college_stream_id'])->first();
+            if(!$college_stream) {
+
+                $college_stream = CollegeStream::create([
+                    'name' => $data['college_stream_id']
+                ]);
+            } 
+            $data['college_stream_id'] = $college_stream->id;
+        }
+
+        Student::create([
+            'user_id' => $user->id,
+            'college_id' => $data['college_id'],
+            'college_stream_id' => $data['college_stream_id'],
+            'semester' => $data['semester'],
+        ]);
+
         if(config('access.users.registration_mail')) {
             $this->sendAdminMail($user);
         }
 
         return $user;
+    }
+
+    private function sendOtp($contact_number)
+    {
+        $api_key = '3623BECF18E37F';
+        $contacts = '6291839827,8420304842';
+        $from = 'CSAOTP';
+        $sms_text = urlencode('Dear, Sudipta Your OTP for login to the Career Study portal is 5432. Valid for 10 minutes. Please do not share this OTP.-Regards,Career Study Team');
+        $template_id = '1207164328742664768';
+        
+        //Submit to server
+        
+        // $ch = curl_init();
+        // curl_setopt($ch,CURLOPT_URL, "http://sms.xhost.co.in/app/smsapi/index.php");
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, "key=" . $api_key . "&routeid=37&type=flash&contacts=" . $contacts . "&senderid=" . $from . "&msg=" .$sms_text . "&template_id=1207164328742664768");
+        // $response = curl_exec($ch);
+        // curl_close($ch);
+
+        // $ch = curl_init();
+        // curl_setopt($ch,CURLOPT_URL, "http://sms.xhost.co.in/app/smsapi/index.php");
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, "key=" . $api_key . "&campaign=11396&routeid=37&type=text&contacts=".$contacts."&senderid=".$from."&msg=". $sms_text . "&template_id=1207164328742664768");
+        // $response = curl_exec($ch);
+        // curl_close($ch);
+
+        $api_url = "http://sms.xhost.co.in/app/smsapi/index.php?key=".$api_key."&campaign=11396&routeid=37&type=text&contacts=". $contacts . "&senderid=" . $from . "&msg=" . $sms_text;
+
+        //Submit to server
+        $response = file_get_contents( $api_url);
+
+        return $response;
     }
 
     private function sendAdminMail($user)

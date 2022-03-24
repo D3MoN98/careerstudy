@@ -249,6 +249,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the teacher profile that owns the user.
+     */
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    /**
     * Get the earning owns the teacher.
     */
     public function earnings()

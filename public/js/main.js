@@ -201,6 +201,10 @@ $(document).ready(function () {
 
     $('.select2').select2();
 
+    $('.select2-tag').select2({
+        tags: true
+    });
+
 });
 
 function processAjaxTables() {

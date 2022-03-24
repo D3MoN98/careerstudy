@@ -15,6 +15,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCoursesRequest;
 use App\Http\Requests\Admin\UpdateCoursesRequest;
 use App\Http\Controllers\Traits\FileUploadTrait;
+use App\Models\College;
+use App\Models\CollegeStream;
 use Yajra\DataTables\Facades\DataTables;
 
 class CoursesController extends Controller
@@ -173,8 +175,10 @@ class CoursesController extends Controller
         })->get()->pluck('name', 'id');
 
         $categories = Category::where('status', '=', 1)->pluck('name', 'id');
+        $colleges =  College::all();
+        $college_streams =  CollegeStream::all();
 
-        return view('backend.courses.create', compact('teachers', 'categories'));
+        return view('backend.courses.create', compact('teachers', 'categories', 'colleges', 'college_streams'));
     }
 
     /**
@@ -192,6 +196,8 @@ class CoursesController extends Controller
         $request->all();
         $request = $this->saveFiles($request);
 
+
+        
         $slug = "";
         if (($request->slug == "") || $request->slug == null) {
             $slug = str_slug($request->title);
@@ -205,7 +211,32 @@ class CoursesController extends Controller
         }
 
 
-        $course = Course::create($request->all());
+        $course_data = $request->all();
+
+        // college details
+        if (!is_int($request->college_id) && !College::find($request->college_id)) {
+            $college = College::where('name', $request->college_id)->first();
+            if(!$college) {
+                $college = College::create([
+                    'name' => $request->college_id
+                ]);
+
+            } 
+            $course_data['college_id'] = $college->id;
+        }
+        
+        if (!is_int($request->college_stream_id) && !CollegeStream::find($request->college_stream_id)) {
+            $college_stream = CollegeStream::where('name', $request->college_stream_id)->first();
+            if(!$college_stream) {
+
+                $college_stream = CollegeStream::create([
+                    'name' => $request->college_stream_id
+                ]);
+            } 
+            $course_data['college_stream_id'] = $college_stream->id;
+        }
+
+        $course = Course::create($course_data);
         $course->slug = $slug;
         $course->save();
 
@@ -328,8 +359,10 @@ class CoursesController extends Controller
 
 
         $course = Course::findOrFail($id);
+        $colleges =  College::all();
+        $college_streams =  CollegeStream::all();
 
-        return view('backend.courses.edit', compact('course', 'teachers', 'categories'));
+        return view('backend.courses.edit', compact('course', 'teachers', 'categories', 'colleges', 'college_streams'));
     }
 
     /**
@@ -421,7 +454,32 @@ class CoursesController extends Controller
         }
 
 
-        $course->update($request->all());
+        $course_data = $request->all();
+
+        // college details
+        if (!is_int($request->college_id) && !College::find($request->college_id)) {
+            $college = College::where('name', $request->college_id)->first();
+            if(!$college) {
+                $college = College::create([
+                    'name' => $request->college_id
+                ]);
+
+            } 
+            $course_data['college_id'] = $college->id;
+        }
+        
+        if (!is_int($request->college_stream_id) && !CollegeStream::find($request->college_stream_id)) {
+            $college_stream = CollegeStream::where('name', $request->college_stream_id)->first();
+            if(!$college_stream) {
+
+                $college_stream = CollegeStream::create([
+                    'name' => $request->college_stream_id
+                ]);
+            } 
+            $course_data['college_stream_id'] = $college_stream->id;
+        }
+
+        $course->update($course_data);
         if (($request->slug == "") || $request->slug == null) {
             $course->slug = str_slug($request->title);
             $course->save();
