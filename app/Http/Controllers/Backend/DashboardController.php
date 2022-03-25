@@ -7,6 +7,7 @@ use App\Models\Auth\User;
 use App\Models\Bundle;
 use App\Models\Contact;
 use App\Models\Course;
+use App\Models\Notice;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Review;
@@ -41,6 +42,7 @@ class DashboardController extends Controller
             $subscribed_courses = auth()->user()->subscribedCourse();
             $subscribed_bundles = auth()->user()->subscribedBundles();
             $pending_orders = auth()->user()->pendingOrders();
+            $available_courses = [];
             if(auth()->user()->hasRole('teacher')){
                 //IF logged in user is teacher
                 $students_count = Course::whereHas('teachers', function ($query) {
@@ -83,9 +85,12 @@ class DashboardController extends Controller
             } else if(auth()->user()->hasRole('student')){
                 $available_courses = auth()->user()->getAvailableCourses();
             }
+
+            $notices = new Notice;
+            $notices = $notices->getRelevantNotices();
         }
 
 
-        return view('backend.dashboard',compact('purchased_courses','students_count','recent_reviews','threads','purchased_bundles','teachers_count','courses_count','recent_orders','recent_contacts','pending_orders', 'subscribed_courses','subscribed_bundles', 'available_courses'));
+        return view('backend.dashboard',compact('purchased_courses','students_count','recent_reviews','threads','purchased_bundles','teachers_count','courses_count','recent_orders','recent_contacts','pending_orders', 'subscribed_courses','subscribed_bundles', 'available_courses', 'notices'));
     }
 }

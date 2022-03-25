@@ -47,6 +47,18 @@
 @section('content')
     <div class="row">
         <div class="col">
+            @foreach ($notices as $item)
+            <div class="alert alert-{{ $item->type }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                
+                <h4 class="alert-heading">{{ $item->title }}</h4>
+
+                {!! $item->content !!}
+                
+            </div>
+            @endforeach
             <div class="card">
                 <div class="card-header">
                     <strong>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</strong>

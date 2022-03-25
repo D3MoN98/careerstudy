@@ -230,6 +230,7 @@ return array(
     'App\\Models\\LiveLessonSlot' => $baseDir . '/app/Models/LiveLessonSlot.php',
     'App\\Models\\Locale' => $baseDir . '/app/Models/Locale.php',
     'App\\Models\\Media' => $baseDir . '/app/Models/Media.php',
+    'App\\Models\\Notice' => $baseDir . '/app/Models/Notice.php',
     'App\\Models\\OauthClient' => $baseDir . '/app/Models/OauthClient.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
     'App\\Models\\OrderItem' => $baseDir . '/app/Models/OrderItem.php',

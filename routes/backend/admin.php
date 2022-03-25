@@ -296,6 +296,12 @@ Route::group(['prefix' => 'blog'], function () {
     Route::post('{id}/storecomment', 'Admin\BlogController@storeComment')->name('storeComment');
 });
 Route::resource('blogs', 'Admin\BlogController');
+
+// notice routes
+Route::group(['middleware' => 'role:administrator'], function () {
+    Route::resource('notices', 'Admin\NoticeController');
+});
+
 Route::get('get-blogs-data', ['uses' => 'Admin\BlogController@getData', 'as' => 'blogs.get_data']);
 Route::post('blogs_mass_destroy', ['uses' => 'Admin\BlogController@massDestroy', 'as' => 'blogs.mass_destroy']);
 

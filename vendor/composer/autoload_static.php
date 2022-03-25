@@ -1597,6 +1597,7 @@ class ComposerStaticInit76bb34f2e31f84548d41c568bd7576a4
         'App\\Models\\LiveLessonSlot' => __DIR__ . '/../..' . '/app/Models/LiveLessonSlot.php',
         'App\\Models\\Locale' => __DIR__ . '/../..' . '/app/Models/Locale.php',
         'App\\Models\\Media' => __DIR__ . '/../..' . '/app/Models/Media.php',
+        'App\\Models\\Notice' => __DIR__ . '/../..' . '/app/Models/Notice.php',
         'App\\Models\\OauthClient' => __DIR__ . '/../..' . '/app/Models/OauthClient.php',
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
         'App\\Models\\OrderItem' => __DIR__ . '/../..' . '/app/Models/OrderItem.php',

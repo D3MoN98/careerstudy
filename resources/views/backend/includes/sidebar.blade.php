@@ -340,6 +340,17 @@
                     <span class="title">@lang('menus.backend.sidebar.account.title')</span>
                 </a>
             </li>
+            
+            @if ($logged_in_user->isAdmin())
+            <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(1) == 'notices' ? 'active' : '' }}"
+                   href="{{ route('admin.notices.index') }}">
+                    <i class="nav-icon icon-key"></i>
+                    <span class="title">Notices</span>
+                </a>
+            </li>
+            @endif
+
             @if ($logged_in_user->hasRole('student'))
             <li class="nav-item ">
                 <a class="nav-link {{ $request->segment(1) == 'subscriptions' ? 'active' : '' }}"
