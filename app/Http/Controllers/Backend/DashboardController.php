@@ -80,10 +80,12 @@ class DashboardController extends Controller
                 $courses_count = \App\Models\Course::all()->count() + \App\Models\Bundle::all()->count();
                 $recent_orders = Order::orderBy('created_at','desc')->take(10)->get();
                 $recent_contacts = Contact::orderBy('created_at','desc')->take(10)->get();
+            } else if(auth()->user()->hasRole('student')){
+                $available_courses = auth()->user()->getAvailableCourses();
             }
         }
 
 
-        return view('backend.dashboard',compact('purchased_courses','students_count','recent_reviews','threads','purchased_bundles','teachers_count','courses_count','recent_orders','recent_contacts','pending_orders', 'subscribed_courses','subscribed_bundles'));
+        return view('backend.dashboard',compact('purchased_courses','students_count','recent_reviews','threads','purchased_bundles','teachers_count','courses_count','recent_orders','recent_contacts','pending_orders', 'subscribed_courses','subscribed_bundles', 'available_courses'));
     }
 }

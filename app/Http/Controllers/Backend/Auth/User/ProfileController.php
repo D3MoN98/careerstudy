@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend\Auth\User;
 use App\Http\Controllers\Controller;
 use App\Repositories\Frontend\Auth\UserRepository;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
+use App\Models\College;
+use App\Models\CollegeStream;
 
 /**
  * Class ProfileController.
@@ -47,6 +49,9 @@ class ProfileController extends Controller
             $request->only('first_name', 'last_name','dob', 'phone', 'gender', 'address', 'city', 'pincode', 'state', 'country', 'avatar_type', 'avatar_location','email'),
             $request->has('avatar_location') ? $request->file('avatar_location') : false
         );
+
+
+        // for teacher update
         if($request->user()->hasRole('teacher')){
             $payment_details = [
                 'bank_name'         => request()->payment_method == 'bank'?request()->bank_name:'',
@@ -65,6 +70,39 @@ class ProfileController extends Controller
             ];
             $request->user()->teacherProfile->update($data);
         }
+
+        // for student update
+        if($request->user()->hasRole('student')){
+            if (!is_int($request->college_id) && !College::find($request->college_id)) {
+                $college = College::where('name', $request->college_id)->first();
+                if(!$college) {
+                    $college = College::create([
+                        'name' => $request->college_id
+                    ]);
+    
+                } 
+                $request->college_id = $college->id;
+            }
+            
+            if (!is_int($request->college_stream_id) && !CollegeStream::find($request->college_stream_id)) {
+                $college_stream = CollegeStream::where('name', $request->college_stream_id)->first();
+                if(!$college_stream) {
+    
+                    $college_stream = CollegeStream::create([
+                        'name' => $request->college_stream_id
+                    ]);
+                } 
+                $request->college_stream_id = $college_stream->id;
+            }
+    
+            $student = auth()->user()->student;
+            $student->college_id = $request->college_id;
+            $student->college_stream_id = $request->college_stream_id;
+            $student->semester = $request->semester;
+            $student->save();
+        }
+
+
         // E-mail address was updated, user has to reconfirm
         if (is_array($output) && $output['email_changed']) {
             auth()->logout();

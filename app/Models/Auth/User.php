@@ -32,6 +32,7 @@ use App\Models\Auth\Traits\Attribute\UserAttribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
 use App\Models\Earning;
+use App\Models\Student;
 use App\Models\TeacherProfile;
 use App\Models\Withdraw;
 use Lexx\ChatMessenger\Traits\Messagable;
@@ -340,6 +341,19 @@ class User extends Authenticatable
             }
         }
         return $courseIds;
+    }
+
+
+    public function getAvailableCourses(){
+        $student = auth()->user()->student;
+        $courses = Course::where([
+            'college_id' => $student->college_id,
+            'college_stream_id' => $student->college_stream_id,
+            'semester' => $student->semester,
+        ])->get();
+
+        return $courses;
+
     }
 
     /**

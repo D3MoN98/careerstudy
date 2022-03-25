@@ -72,6 +72,28 @@ class LoginController extends Controller
             $credentials = $request->only($this->username(), 'password');
             $authSuccess = \Illuminate\Support\Facades\Auth::attempt($credentials, $request->has('remember'));
             if($authSuccess) {
+
+                // otp check
+                if (!auth()->user()->confirmed && auth()->user()->hasRole('student')) {
+                    $contact_number = auth()->user()->phone;
+                    $user = auth()->user();
+                    
+                    $this->sendOtp($contact_number, auth()->user()->first_name);
+
+                    \Illuminate\Support\Facades\Auth::logout();
+
+                    $otp_data = session('otp_data');
+
+                    return response([
+                        'success' => false,
+                        'otp' => false,
+                        'contact_number' => $user->phone,
+                        'contact_number_preview' => substr($user->phone, 0, -6) . "******",
+                        'user_id' => $user->id,
+                        'otp_expire_time' => 10*60 - (time() - session('otp_data')['created_at'])
+                    ], Response::HTTP_FORBIDDEN);
+                }
+
                 $request->session()->regenerate();
                 if(auth()->user()->active > 0){
                     if(auth()->user()->isAdmin()){
@@ -113,7 +135,39 @@ class LoginController extends Controller
     }
 
 
+    private function sendOtp($contact_number, $name)
+    {
+        $otp_session = session('otp_data');
 
+        if (isset($otp_session) && $otp_session['contact_number'] == $contact_number && time() - $otp_session['created_at'] < 10*60) {
+            return true;
+        }
+
+        $api_key = '3623BECF18E37F';
+        $contacts = "$contact_number";
+        $from = 'CSAOTP';
+        $otp = rand(pow(10, 4-1), pow(10, 4)-1);
+
+        $sms_text = urlencode("Dear, $name Your OTP for login to the Career Study portal is $otp. Valid for 10 minutes. Please do not share this OTP.-Regards,Career Study Team");
+        $template_id = '1207164328742664768';
+        
+        $api_url = "http://sms.xhost.co.in/app/smsapi/index.php?key=".$api_key."&campaign=11396&routeid=37&type=text&contacts=". $contacts . "&senderid=" . $from . "&msg=" . $sms_text . "&template_id=1207164328742664768";
+
+        //Submit to server
+        $response = file_get_contents( $api_url);
+
+        if (!strpos('ERR', $response)) {
+            $data['otp'] = $otp;
+            $data['contact_number'] = $contact_number;
+            $data['created_at'] = time();
+
+            session(['otp_data' => $data]);
+
+            return true;
+        }
+        return false;
+
+    }
 
 
     /**

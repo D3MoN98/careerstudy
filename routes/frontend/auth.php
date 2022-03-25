@@ -63,6 +63,8 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
         if (config('access.registration')) {
             Route::get('register', [LoginController::class, 'showLoginForm'])->name('register');
             Route::post('register', [RegisterController::class, 'register'])->name('register.post');
+            Route::post('otp-verification', [RegisterController::class, 'verifyOtp'])->name('otp_verification');
+            Route::post('resend-otp', [RegisterController::class, 'resendOtp'])->name('resend_otp');
         }
 
         // Confirm Account Routes

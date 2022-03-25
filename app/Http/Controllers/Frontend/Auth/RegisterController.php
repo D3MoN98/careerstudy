@@ -16,6 +16,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Repositories\Frontend\Auth\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ClosureValidationRule;
@@ -73,13 +74,11 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $res = $this->sendOtp('6291839827');
-        return response(['success' => $res]);
-
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
+            'phone' => 'required|max:14|unique:users',
             'password' => 'required|min:6|confirmed',
             'g-recaptcha-response' => (config('access.captcha.registration') ? ['required',new CaptchaRule] : ''),
         ],[
@@ -89,7 +88,17 @@ class RegisterController extends Controller
         if ($validator->passes()) {
             // Store your user in database
             event(new Registered($user = $this->create($request->all())));
-            return response(['success' => true]);
+            // otp sent
+            $this->sendOtp($user->phone, $user->first_name);
+
+            return response([
+                'success' => true,
+                'otp' => true,
+                'contact_number' => $user->phone,
+                'contact_number_preview' => substr($user->phone, 0, -6) . "******",
+                'user_id' => $user->id,
+                'otp_expire_time' => 10*60 - (time() - session('otp_data')['created_at'])
+            ]);
 
         }
 
@@ -121,12 +130,9 @@ class RegisterController extends Controller
                 $user->save();
 
         $userForRole = User::find($user->id);
-        $userForRole->confirmed = 1;
+        $userForRole->confirmed = 0;
         $userForRole->save();
         $userForRole->assignRole('student');
-
-        // send otp
-        $this->sendOtp($user->phone);
 
         // college details
         if (!is_int($data['college_id']) && !College::find($data['college_id'])) {
@@ -165,38 +171,55 @@ class RegisterController extends Controller
         return $user;
     }
 
-    private function sendOtp($contact_number)
+    private function sendOtp($contact_number, $name)
     {
+        $otp_session = session('otp_data');
+
+        // if (isset($otp_session) && $otp_session['contact_number'] == $contact_number && time() - $otp_session['created_at'] < 10*60) {
+        //     return true;
+        // }
+
         $api_key = '3623BECF18E37F';
-        $contacts = '6291839827,8420304842';
+        $contacts = "$contact_number";
         $from = 'CSAOTP';
-        $sms_text = urlencode('Dear, Sudipta Your OTP for login to the Career Study portal is 5432. Valid for 10 minutes. Please do not share this OTP.-Regards,Career Study Team');
+        $otp = rand(pow(10, 4-1), pow(10, 4)-1);
+        $sms_text = urlencode("Dear, $name Your OTP for login to the Career Study portal is $otp. Valid for 10 minutes. Please do not share this OTP.-Regards,Career Study Team");
         $template_id = '1207164328742664768';
         
-        //Submit to server
-        
-        // $ch = curl_init();
-        // curl_setopt($ch,CURLOPT_URL, "http://sms.xhost.co.in/app/smsapi/index.php");
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, "key=" . $api_key . "&routeid=37&type=flash&contacts=" . $contacts . "&senderid=" . $from . "&msg=" .$sms_text . "&template_id=1207164328742664768");
-        // $response = curl_exec($ch);
-        // curl_close($ch);
-
-        // $ch = curl_init();
-        // curl_setopt($ch,CURLOPT_URL, "http://sms.xhost.co.in/app/smsapi/index.php");
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($ch, CURLOPT_POST, 1);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, "key=" . $api_key . "&campaign=11396&routeid=37&type=text&contacts=".$contacts."&senderid=".$from."&msg=". $sms_text . "&template_id=1207164328742664768");
-        // $response = curl_exec($ch);
-        // curl_close($ch);
-
-        $api_url = "http://sms.xhost.co.in/app/smsapi/index.php?key=".$api_key."&campaign=11396&routeid=37&type=text&contacts=". $contacts . "&senderid=" . $from . "&msg=" . $sms_text;
+        $api_url = "http://sms.xhost.co.in/app/smsapi/index.php?key=".$api_key."&campaign=11396&routeid=37&type=text&contacts=". $contacts . "&senderid=" . $from . "&msg=" . $sms_text . "&template_id=1207164328742664768";
 
         //Submit to server
         $response = file_get_contents( $api_url);
 
-        return $response;
+        if (!strpos('ERR', $response)) {
+            $data['otp'] = $otp;
+            $data['contact_number'] = $contact_number;
+            $data['created_at'] = time();
+
+            session(['otp_data' => $data]);
+
+            return true;
+        }
+        return false;
+
+    }
+
+    public function resendOtp(Request $request)
+    {
+        if ($user = User::find($request->user_id)) {
+            $this->sendOtp($user->phone, $user->first_name);
+            
+            $otp_session = session('otp_data');
+            return response([
+                'success' => true,
+                'otp' => true,
+                'contact_number' => $user->phone,
+                'contact_number_preview' => substr($user->phone, 0, -6) . "******",
+                'user_id' => $user->id,
+                'otp_expire_time' => 10*60 - (time() - $otp_session['created_at'])
+            ]);
+        }
+
     }
 
     private function sendAdminMail($user)
@@ -208,6 +231,21 @@ class RegisterController extends Controller
         }
     }
 
+    public function verifyOtp(Request $request)
+    {
+
+        $otp_session = session('otp_data');
+
+        if (isset($otp_session) && $otp_session['contact_number'] == $request->contact_number && $request->otp == $otp_session['otp'] && time() - $otp_session['created_at'] < 10*60) {
+            $user = User::find($request->user_id);
+            $user->confirmed = 1;
+            $user->save();
+            session()->forget('otp_data');
+            return response(['success' => true, 'otp_confirmed' => true], Response::HTTP_OK);    
+        } else {
+            return response(['success' => false, 'otp_confirmed' => false], Response::HTTP_FORBIDDEN);    
+        }
+    }
 
 
 }

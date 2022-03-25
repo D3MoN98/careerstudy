@@ -224,6 +224,7 @@
     </div><!--row-->
 
 @endif
+
 @if ($logged_in_user->canChangeEmail())
     <div class="row">
         <div class="col">
@@ -243,6 +244,7 @@
         </div><!--col-->
     </div><!--row-->
 @endif
+
 @if(config('registration_fields') != NULL)
     @php
         $fields = json_decode(config('registration_fields'));
@@ -287,6 +289,57 @@
     @endforeach
 
 @endif
+
+@if($logged_in_user->hasRole('student'))
+
+<div class="row">
+    <div class="col">
+        <div class="form-group">
+            College
+
+            @php
+                $colleges = App\Models\College::all();
+            @endphp
+            <select name="college_id" class="form-control mb-0 select2-tag" required>
+                @foreach ($colleges as $college)
+                <option value="{{ $college->id }}" {{ $user->student->college_id == $college->id ? 'selected' : '' }}>{{ $college->name }}</option>
+                @endforeach
+            </select>
+        </div><!--form-group-->
+    </div><!--col-->
+    
+    <div class="col">
+        <div class="form-group">
+            College
+
+            @php
+                $college_streams = App\Models\CollegeStream::all();
+            @endphp
+            <select name="college_stream_id" class="form-control select2-tag" required>
+                @foreach ($college_streams as $college_stream)
+                <option value="{{ $college_stream->id }}"  {{ $user->student->college_stream_id == $college_stream->id ? 'selected' : '' }}>{{ $college_stream->name }}</option>
+                @endforeach
+            </select>
+        </div><!--form-group-->
+    </div><!--col-->
+    
+    <div class="col">
+        <div class="form-group">
+            College
+
+            <select name="semester" id="" class="form-control select2" required>
+                @for ($i = 1; $i <= 8; $i++)
+                <option value="{{ $i }}" {{ $user->student->semester == $i ? 'selected' : '' }}>{{ $i }}</option>
+                @endfor
+            </select>
+        </div><!--form-group-->
+    </div><!--col-->
+</div><!--row-->
+
+@endif
+
+
+
 <div class="row">
     <div class="col">
         <div class="form-group mb-0 clearfix">

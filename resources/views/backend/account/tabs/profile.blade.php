@@ -87,5 +87,22 @@
                 </tr>
             @endforeach
         @endif
+
+        @if($logged_in_user->hasRole('student'))
+        <tr>
+            <th>College</th>
+            <td>{{$user->student->college->name}}</td>
+        </tr>
+        
+        <tr>
+            <th>Stream</th>
+            <td>{{$user->student->college_stream->name}}</td>
+        </tr>
+        
+        <tr>
+            <th>Semester</th>
+            <td>{{$user->student->semester}}</td>
+        </tr>
+        @endif
     </table>
 </div>
