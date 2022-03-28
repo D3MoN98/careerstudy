@@ -87,7 +87,13 @@
 
     <div id="app">
     {{--<div id="preloader"></div>--}}
+    @if (!auth()->check())
     @include('frontend.layouts.modals.loginModal')
+    @endif
+
+    @if (auth()->check() && auth()->user()->hasRole('student') && !auth()->user()->student)
+    @include('frontend.layouts.modals.studentDetailsModal')
+    @endif
 
 
     <!-- Start of Header section

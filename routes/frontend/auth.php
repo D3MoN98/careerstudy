@@ -44,6 +44,11 @@ Route::group(['namespace' => 'Auth', 'as' => 'auth.'], function () {
         Route::get('teacher/register/approve',[TeacherRegisterController::class, 'showTeacherApproveRegistration'])->name('teacher.register.approve');
         Route::get('teacher/register/confirm_email',[TeacherRegisterController::class, 'showTeacherConfirmEmailRegistration'])->name('teacher.register.confirm_email');
 
+        // notice routes
+        Route::group(['middleware' => 'role:student'], function () {
+            Route::post('student-details', [RegisterController::class, 'studentDetailsInsert'])->name('student-details');
+        });
+
 
     });
 

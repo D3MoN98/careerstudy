@@ -37,16 +37,16 @@ class CoursesController extends Controller
     public function all()
     {
         if (request('type') == 'popular') {
-            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->where('popular', '=', 1)->orderBy('id', 'desc');
 
         } else if (request('type') == 'trending') {
-            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->where('trending', '=', 1)->orderBy('id', 'desc');
 
         } else if (request('type') == 'featured') {
-            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->where('featured', '=', 1)->orderBy('id', 'desc');
 
         } else {
-            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->orderBy('id', 'desc')->paginate(9);
+            $courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', 1)->orderBy('id', 'desc');
         }
         $purchased_courses = NULL;
         $purchased_bundles = NULL;
@@ -59,7 +59,13 @@ class CoursesController extends Controller
                 ->with('lessons')
                 ->orderBy('id', 'desc')
                 ->get();
+
+            if(auth()->user()->hasRole('student')){
+                $courses = auth()->user()->getFilteredavailableCourses($courses);
+            }
         }
+
+        $courses = $courses->paginate(9);
         $featured_courses = Course::withoutGlobalScope('filter')->canDisableCourse()->where('published', '=', 1)
             ->where('featured', '=', 1)->take(8)->get();
 

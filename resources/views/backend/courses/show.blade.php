@@ -83,15 +83,15 @@
                         </tr>
                         <tr>
                             <th>College</th>
-                            <td>{{ $course->college->name }}</td>
+                            <td>{{ $course->college->name ?? null }}</td>
                         </tr>
                         <tr>
                             <th>Stream</th>
-                            <td>{{ $course->college_stream->name }}</td>
+                            <td>{{ $course->college_stream->name ?? null }}</td>
                         </tr>
                         <tr>
                             <th>Semester</th>
-                            <td>{{ $course->semester }}</td>
+                            <td>{{ $course->semester ?? null }}</td>
                         </tr>
                         <tr>
                             <th>@lang('labels.backend.courses.fields.description')</th>

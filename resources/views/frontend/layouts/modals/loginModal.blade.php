@@ -142,14 +142,14 @@
                                         ->class('form-control mb-0')
                                         ->placeholder(__('validation.attributes.frontend.first_name'))
                                         ->attribute('maxlength', 191)->required() }}
-                                    <span id="first-name-error" class="text-danger"></span>
+                                    <span id="first-name-error" class="text-danger invalid-feedback d-block"></span>
                                 </div>
                                 <div class="form-group contact-info mb-2">
                                     {{ html()->text('last_name')
                                       ->class('form-control mb-0')
                                       ->placeholder(__('validation.attributes.frontend.last_name'))
                                       ->attribute('maxlength', 191)->required() }}
-                                    <span id="last-name-error" class="text-danger"></span>
+                                    <span id="last-name-error" class="text-danger invalid-feedback d-block"></span>
 
                                 </div>
 
@@ -165,14 +165,14 @@
                                 <div class="form-group contact-info mb-2">
                                     {{ html()->password('password')
                                         ->class('form-control mb-0')
-                                        ->placeholder(__('validation.attributes.frontend.password'))
+                                        ->placeholder(__('validation.attributes.frontend.password'))->required()
                                          }}
-                                    <span id="password-error" class="text-danger"></span>
+                                    <span id="password-error" class="text-danger invalid-feedback d-block"></span>
                                 </div>
                                 <div class="form-group contact-info mb-2">
                                     {{ html()->password('password_confirmation')
                                         ->class('form-control mb-0')
-                                        ->placeholder(__('validation.attributes.frontend.password_confirmation'))
+                                        ->placeholder(__('validation.attributes.frontend.password_confirmation'))->required()
                                          }}
                                 </div>
                                 @if(config('registration_fields') != NULL)
@@ -213,40 +213,6 @@
                                         @endif
                                     @endforeach
                                 @endif
-
-                                <div class="form-group contact-info mb-2">
-                                    @php
-                                        $colleges = App\Models\College::all();
-                                    @endphp
-                                    <select name="college_id" class="form-control mb-0 select2-tag-college" required>
-                                        <option></option>
-                                        @foreach ($colleges as $college)
-                                        <option value="{{ $college->id }}">{{ $college->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-
-                                <div class="form-group contact-info mb-2">
-                                    @php
-                                        $college_streams = App\Models\CollegeStream::all();
-                                    @endphp
-                                    <select name="college_stream_id" class="form-control select2-tag-college-stream" required>
-                                        <option></option>
-                                        @foreach ($college_streams as $college_stream)
-                                        <option value="{{ $college_stream->id }}">{{ $college_stream->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group contact-info mb-2">
-                                    <select name="semester" id="" class="form-control select2" required>
-                                        <option></option>
-                                        @for ($i = 1; $i <= 8; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
 
                                 @if(config('access.captcha.registration'))
                                     <div class="contact-info mt-3 text-center">
@@ -299,7 +265,7 @@
                                     
                                 <span style="display: {{ time() - $otp_data['created_at'] < 10*60 ? 'block' : 'none' }}" class="text-info p-0 text-right my-2 otp-expire-time">{{ 10*60 - (time() - $otp_data['created_at']) }}</span>
                                 <a style="display: {{ time() - $otp_data['created_at'] > 10*60 ? 'block' : 'none' }}" class="text-info p-0 text-right my-2 resend-otp"
-                                href="#">Resend Otp</a>
+                                href="#">Not recieved any OTP? Resend again</a>
                                     
                             </form>
                         </div>
@@ -324,30 +290,6 @@
         {{ no_captcha()->script() }}
 
     @endif
-
-
-    {{-- select2 script --}}
-    <script>
-        $(document).ready(function() {
-            $(".select2").select2({
-                dropdownParent: $("#myModal  .modal-content"),
-                placeholder: "Select a semester"
-            });
-            
-            $(".select2-tag-college").select2({
-                dropdownParent: $("#myModal  .modal-content"),
-                tags: true,
-                placeholder: "Select a college"
-            });
-            
-            $(".select2-tag-college-stream").select2({
-                dropdownParent: $("#myModal  .modal-content"),
-                tags: true,
-                placeholder: "Select a stream"
-            });
-        });
-
-    </script>
 
 
     {{-- ajax submit script --}}
@@ -617,7 +559,7 @@
                 },
                 password_confirmation : {
                     minlength : 5,
-                    equalTo : "#password"
+                    equalTo : '#registerForm [name="password"]'
                 }
             },
             errorPlacement: function (error, element) {

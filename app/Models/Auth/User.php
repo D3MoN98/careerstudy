@@ -356,6 +356,18 @@ class User extends Authenticatable
 
     }
 
+    public function getFilteredavailableCourses($courses)
+    {
+        $student = auth()->user()->student;
+        return $courses->where(
+            [
+                'college_id' => $student->college_id,
+                'college_stream_id' => $student->college_stream_id,
+                'semester' => $student->semester,
+            ]
+        );
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

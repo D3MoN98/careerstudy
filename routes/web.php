@@ -7,7 +7,14 @@ use App\Http\Controllers\Frontend\HomeController;
  * Global Routes
  * Routes that are used between both frontend and backend.
  */
-
+Route::get('/clear-cache', function () {
+    $res['cache'] = Artisan::call('cache:clear');
+    $res['config'] = Artisan::call('config:clear');
+    $res['route'] = Artisan::call('route:clear');
+    $res['view'] = Artisan::call('view:clear');
+    dd(Artisan::call('storage:link'));
+    return 'cache cleared';
+});
 
 
 // Switch between the included languages

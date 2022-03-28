@@ -134,6 +134,16 @@ class RegisterController extends Controller
         $userForRole->save();
         $userForRole->assignRole('student');
 
+        if(config('access.users.registration_mail')) {
+            $this->sendAdminMail($user);
+        }
+
+        return $user;
+    }
+
+    public function studentDetailsInsert(Request $request)
+    {
+        $data = $request->all();
         // college details
         if (!is_int($data['college_id']) && !College::find($data['college_id'])) {
             $college = College::where('name', $data['college_id'])->first();
@@ -158,17 +168,18 @@ class RegisterController extends Controller
         }
 
         Student::create([
-            'user_id' => $user->id,
+            'user_id' => auth()->user()->id,
             'college_id' => $data['college_id'],
             'college_stream_id' => $data['college_stream_id'],
             'semester' => $data['semester'],
         ]);
 
-        if(config('access.users.registration_mail')) {
-            $this->sendAdminMail($user);
-        }
+        return response([
+            'success' => true,
+            'otp' => $data
+        ]);
 
-        return $user;
+
     }
 
     private function sendOtp($contact_number, $name)
