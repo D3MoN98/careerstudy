@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Notice;
+use App\Models\College;
 use Illuminate\Http\Request;
 
-class NoticeController extends Controller
+class CollegeController extends Controller
 {
-    /**
+   /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $notices = Notice::all();
-        return view('backend.notices.index', compact('notices'));
+        $colleges = College::all();
+        return view('backend.colleges.index', compact('colleges'));
     }
 
     /**
@@ -26,7 +26,7 @@ class NoticeController extends Controller
      */
     public function create()
     {
-        return view('backend.notices.create');
+        return view('backend.colleges.create');
     }
 
     /**
@@ -37,12 +37,10 @@ class NoticeController extends Controller
      */
     public function store(Request $request)
     {
-        $notice = $request->all();
-        $notice['user_id'] = auth()->user()->id;
+        $college = $request->all();
+        College::create($college);
 
-        Notice::create($notice);
-
-        return redirect()->route('admin.notice.index')->withFlashSuccess(__('alerts.backend.general.created'));
+        return redirect()->route('admin.college.index')->withFlashSuccess(__('alerts.backend.general.created'));
     }
 
     /**
@@ -53,8 +51,8 @@ class NoticeController extends Controller
      */
     public function show($id)
     {
-        $notice = Notice::find($id);
-        return view('backend.notices.show', compact('notice'));
+        $college = College::find($id);
+        return view('backend.colleges.show', compact('college'));
     }
 
     /**
@@ -65,8 +63,8 @@ class NoticeController extends Controller
      */
     public function edit($id)
     {
-        $notice = Notice::find($id);
-        return view('backend.notices.edit', compact('notice'));
+        $college = College::find($id);
+        return view('backend.colleges.edit', compact('college'));
     }
 
     /**
@@ -78,10 +76,10 @@ class NoticeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $notice = $request->all();
-        Notice::find($id)->update($notice);
+        $college = $request->all();
+        College::find($id)->update($college);
 
-        return redirect()->route('admin.notice.index')->withFlashSuccess(__('alerts.backend.general.updated'));
+        return redirect()->route('admin.college.index')->withFlashSuccess(__('alerts.backend.general.updated'));
     }
 
     /**
@@ -92,9 +90,9 @@ class NoticeController extends Controller
      */
     public function destroy($id)
     {
-        Notice::find($id)->delete();
+        College::find($id)->delete();
 
-        return redirect()->route('admin.notice.index')->withFlashSuccess(__('alerts.backend.general.deleted'));
+        return redirect()->route('admin.college.index')->withFlashSuccess(__('alerts.backend.general.deleted'));
 
     }
 }

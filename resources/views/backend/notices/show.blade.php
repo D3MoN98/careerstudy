@@ -28,7 +28,7 @@
                     <table class="table table-bordered table-striped">
 
                         <tr>
-                            <th>Actice</th>
+                            <th>Active</th>
                             <td>
                                 @if ($notice->is_active)
                                 <span class="badge badge-success">Active</span>
@@ -80,7 +80,7 @@
             <!-- Tab panes -->
 
 
-            <a href="{{ route('admin.notices.index') }}"
+            <a href="{{ route('admin.notice.index') }}"
                class="btn btn-default border">@lang('strings.backend.general.app_back_to_list')</a>
         </div>
     </div>

@@ -343,8 +343,22 @@
             
             @if ($logged_in_user->isAdmin())
             <li class="nav-item ">
-                <a class="nav-link {{ $request->segment(1) == 'notices' ? 'active' : '' }}"
-                   href="{{ route('admin.notices.index') }}">
+                <a class="nav-link {{ $request->segment(1) == 'college' ? 'active' : '' }}"
+                   href="{{ route('admin.college.index') }}">
+                    <i class="nav-icon icon-key"></i>
+                    <span class="title">Colleges</span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(1) == 'college_stream' ? 'active' : '' }}"
+                   href="{{ route('admin.college_stream.index') }}">
+                    <i class="nav-icon icon-key"></i>
+                    <span class="title">College Streams</span>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(1) == 'notice' ? 'active' : '' }}"
+                   href="{{ route('admin.notice.index') }}">
                     <i class="nav-icon icon-key"></i>
                     <span class="title">Notices</span>
                 </a>

@@ -33,13 +33,13 @@
 @endpush
 
 @section('content')
-    {!! Form::model($notice, ['method' => 'PUT', 'route' => ['admin.notices.update', $notice->id], 'files' => true,]) !!}
+    {!! Form::model($notice, ['method' => 'PUT', 'route' => ['admin.notice.update', $notice->id], 'files' => true,]) !!}
 
     <div class="card">
         <div class="card-header">
             <h3 class="page-title float-left mb-0">Notice</h3>
             <div class="float-right">
-                <a href="{{ route('admin.notices.index') }}"
+                <a href="{{ route('admin.notice.index') }}"
                    class="btn btn-success">View Notices</a>
             </div>
         </div>

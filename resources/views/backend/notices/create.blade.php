@@ -32,13 +32,13 @@
 @endpush
 
 @section('content')
-    {!! Form::open(['method' => 'POST', 'route' => ['admin.notices.store'], 'files' => true,]) !!}
+    {!! Form::open(['method' => 'POST', 'route' => ['admin.notice.store'], 'files' => true,]) !!}
 
     <div class="card">
         <div class="card-header">
             <h3 class="page-title float-left mb-0">Notice</h3>
             <div class="float-right">
-                <a href="{{ route('admin.notices.index') }}"
+                <a href="{{ route('admin.notice.index') }}"
                    class="btn btn-success">View Notices</a>
             </div>
         </div>

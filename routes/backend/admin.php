@@ -299,7 +299,9 @@ Route::resource('blogs', 'Admin\BlogController');
 
 // notice routes
 Route::group(['middleware' => 'role:administrator'], function () {
-    Route::resource('notices', 'Admin\NoticeController');
+    Route::resource('notice', 'Admin\NoticeController');
+    Route::resource('college', 'Admin\CollegeController');
+    Route::resource('college_stream', 'Admin\CollegeStreamController');
 });
 
 Route::get('get-blogs-data', ['uses' => 'Admin\BlogController@getData', 'as' => 'blogs.get_data']);
