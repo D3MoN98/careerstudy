@@ -363,6 +363,13 @@
                     <span class="title">Notices</span>
                 </a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(1) == 'job' ? 'active' : '' }}"
+                   href="{{ route('admin.job.index') }}">
+                    <i class="nav-icon icon-key"></i>
+                    <span class="title">Jobs</span>
+                </a>
+            </li>
             @endif
 
             @if ($logged_in_user->hasRole('student'))
@@ -516,6 +523,26 @@
                     href="{{ route('admin.payments') }}">
                     <i class="nav-icon icon-wallet"></i>
                     <span class="title">@lang('menus.backend.sidebar.payments.title')</span>
+                </a>
+            </li>
+            @endif
+
+            @if ($logged_in_user->hasRole('teacher') || $logged_in_user->hasRole('student'))
+            <li class="nav-item ">
+                <a class="nav-link"
+                    target="_blank"
+                    href="{{ route('blogs.index') }}">
+                    <i class="nav-icon icon-wallet"></i>
+                    <span class="title">Blogs</span>
+                </a>
+            </li>
+            
+            <li class="nav-item ">
+                <a class="nav-link"
+                    target="_blank"
+                    href="{{ url('forums') }}">
+                    <i class="nav-icon icon-wallet"></i>
+                    <span class="title">Forums</span>
                 </a>
             </li>
             @endif

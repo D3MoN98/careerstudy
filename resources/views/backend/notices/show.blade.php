@@ -1,5 +1,11 @@
 @extends('backend.layouts.app')
-@section('title', 'Notice | '.app_name())
+
+@php
+    $segment = Request::segment(2)
+@endphp
+
+
+@section('title', ucwords($segment) . ' | '.app_name())
 
 @push('after-styles')
     <style>
@@ -20,7 +26,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="page-title float-left mb-0">Notice</h3>
+            <h3 class="page-title float-left mb-0">{{ ucwords($segment) }}</h3>
         </div>
         <div class="card-body">
             <div class="row">
@@ -43,7 +49,7 @@
                             <td>{{ $notice->title }}</td>
                         </tr>
                         <tr>
-                            <th>Notice Details</th>
+                            <th>Content</th>
                             <td>{!! $notice->content !!}</td>
                         </tr>
 
@@ -80,7 +86,7 @@
             <!-- Tab panes -->
 
 
-            <a href="{{ route('admin.notice.index') }}"
+            <a href="{{ route("admin.$segment.index") }}"
                class="btn btn-default border">@lang('strings.backend.general.app_back_to_list')</a>
         </div>
     </div>

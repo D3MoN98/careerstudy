@@ -1,15 +1,20 @@
 @inject('request', 'Illuminate\Http\Request')
 @extends('backend.layouts.app')
 
-@section('title', 'Notice | ' . app_name())
+@php
+    $segment = Request::segment(2)
+@endphp
+
+@section('title', ucwords($segment) . ' | ' . app_name())
 
 @section('content')
 
+
     <div class="card">
         <div class="card-header">
-            <h3 class="page-title d-inline">Notice</h3>
+            <h3 class="page-title d-inline">{{ ucwords($segment) }}</h3>
             <div class="float-right">
-                <a href="{{ route('admin.notice.create') }}"
+                <a href="{{ route("admin.$segment.create") }}"
                     class="btn btn-success">@lang('strings.backend.general.app_add_new')</a>
             </div>
         </div>
@@ -44,10 +49,10 @@
                             <td>{{ $item->created_at->format('d M Y, h:i A') }}</td>
 
                             <td>
-                                <a href="{{ route('admin.notice.show', $item->id) }}" class="btn btn-xs btn-primary mb-1"><i
+                                <a href="{{ route("admin.$segment.show", $item->id) }}" class="btn btn-xs btn-primary mb-1"><i
                                         class="icon-eye"></i></a>
 
-                                <a href="{{ route('admin.notice.edit', $item->id) }}" class="btn btn-xs btn-info mb-1"><i
+                                <a href="{{ route("admin.$segment.edit", $item->id) }}" class="btn btn-xs btn-info mb-1"><i
                                         class="icon-pencil"></i></a>
 
                                 <a data-method="delete" data-trans-button-cancel="Cancel" data-trans-button-confirm="Delete"
@@ -56,7 +61,7 @@
                                     onclick="$(this).find('form').submit();">
                                     <i class="fa fa-trash" data-toggle="tooltip" data-placement="top" title=""
                                         data-original-title="Delete"></i>
-                                    <form action="{{ route('admin.notice.destroy', $item->id) }}" method="POST" name="delete_item"
+                                    <form action="{{ route("admin.$segment.destroy", $item->id) }}" method="POST" name="delete_item"
                                         style="display:none">
                                         @csrf
                                         @method('DELETE')

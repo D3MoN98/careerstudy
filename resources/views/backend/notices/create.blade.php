@@ -1,5 +1,10 @@
 @extends('backend.layouts.app')
-@section('title', 'Notice | '.app_name())
+
+@php
+    $segment = Request::segment(2)
+@endphp
+
+@section('title', ucwords($segment) . ' | '.app_name())
 
 @push('after-styles')
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
@@ -32,14 +37,16 @@
 @endpush
 
 @section('content')
-    {!! Form::open(['method' => 'POST', 'route' => ['admin.notice.store'], 'files' => true,]) !!}
+    {!! Form::open(['method' => 'POST', 'route' => ["admin.$segment.store"], 'files' => true,]) !!}
+
+    <input type="hidden" name="category" value="{{ $segment }}">
 
     <div class="card">
         <div class="card-header">
-            <h3 class="page-title float-left mb-0">Notice</h3>
+            <h3 class="page-title float-left mb-0">{{ ucwords($segment) }}</h3>
             <div class="float-right">
-                <a href="{{ route('admin.notice.index') }}"
-                   class="btn btn-success">View Notices</a>
+                <a href="{{ route("admin.$segment.index") }}"
+                   class="btn btn-success">View {{ ucwords($segment) }}s</a>
             </div>
         </div>
 

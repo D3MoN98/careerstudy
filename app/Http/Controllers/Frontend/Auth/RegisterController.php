@@ -190,7 +190,7 @@ class RegisterController extends Controller
         //     return true;
         // }
 
-        $api_key = '3623BECF18E37F';
+        $api_key = '26242E8C1F0C88';
         $contacts = "$contact_number";
         $from = 'CSAOTP';
         $otp = rand(pow(10, 4-1), pow(10, 4)-1);

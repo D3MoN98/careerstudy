@@ -41,24 +41,65 @@
             border-top: 1px solid #c4c4c4;
             width: 100%;
         }
+
     </style>
 @endpush
 
 @section('content')
     <div class="row">
         <div class="col">
-            @foreach ($notices as $item)
-            <div class="alert alert-{{ $item->type }}" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="list-group list-group-horizontal" style="flex-direction: row;" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+                            href="#list-home" role="tab" aria-controls="home">Notices</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                            href="#list-profile" role="tab" aria-controls="profile">Jobs</a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="list-home" role="tabpanel"  style="max-height: 150px; overflow: scroll"
+                            aria-labelledby="list-home-list">
+                            @if (count($notices) > 0)
+                            @foreach ($notices as $item)
+                            <div class="alert alert-{{ $item->type }}" role="alert">
+            
+                                <h4 class="alert-heading">{{ $item->title }}</h4>
+            
+                                {!! $item->content !!}
+            
+                            </div>
+                            @endforeach
+                            @else
+                            <div class="alert" role="alert">
+                                No new notices are available
+                            </div>  
+                            @endif
+                        
+                        </div>
+                        <div class="tab-pane fade" id="list-profile" role="tabpanel" style="max-height: 150px; overflow: scroll" aria-labelledby="list-profile-list">
+                            @if (count($jobs) > 0)
+                            @foreach ($jobs as $item)
+                                <div class="alert alert-{{ $item->type }}" role="alert">
                 
-                <h4 class="alert-heading">{{ $item->title }}</h4>
-
-                {!! $item->content !!}
+                                    <h4 class="alert-heading">{{ $item->title }}</h4>
                 
+                                    {!! $item->content !!}
+                
+                                </div>
+                            @endforeach
+                            @else
+                            <div class="alert" role="alert">
+                                No new notices are available
+                            </div>  
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-            @endforeach
+
+           
             <div class="card">
                 <div class="card-header">
                     <strong>@lang('strings.backend.dashboard.welcome') {{ $logged_in_user->name }}!</strong>
@@ -468,48 +509,48 @@
 
                             @if ($available_courses->count() > 0)
                                 @foreach ($available_courses as $item)
-                                <div class="col-md-3 mt-3">
-                                    <div class="best-course-pic-text position-relative border">
-                                        <div class="best-course-pic position-relative overflow-hidden"
-                                            @if ($item->course_image != '') style="background-image: url({{ asset('storage/uploads/' . $item->course_image) }})" @endif>
+                                    <div class="col-md-3 mt-3">
+                                        <div class="best-course-pic-text position-relative border">
+                                            <div class="best-course-pic position-relative overflow-hidden"
+                                                @if ($item->course_image != '') style="background-image: url({{ asset('storage/uploads/' . $item->course_image) }})" @endif>
 
-                                            @if ($item->trending == 1)
-                                                <div class="trend-badge-2 text-center text-uppercase">
-                                                    <i class="fas fa-bolt"></i>
-                                                    <span>@lang('labels.backend.dashboard.trending') </span>
+                                                @if ($item->trending == 1)
+                                                    <div class="trend-badge-2 text-center text-uppercase">
+                                                        <i class="fas fa-bolt"></i>
+                                                        <span>@lang('labels.backend.dashboard.trending') </span>
+                                                    </div>
+                                                @endif
+
+                                                <div class="course-rate ul-li">
+                                                    <ul>
+                                                        @for ($i = 1; $i <= (int) $item->rating; $i++)
+                                                            <li><i class="fas fa-star"></i></li>
+                                                        @endfor
+                                                    </ul>
                                                 </div>
-                                            @endif
-
-                                            <div class="course-rate ul-li">
-                                                <ul>
-                                                    @for ($i = 1; $i <= (int) $item->rating; $i++)
-                                                        <li><i class="fas fa-star"></i></li>
-                                                    @endfor
-                                                </ul>
                                             </div>
-                                        </div>
-                                        <div class="best-course-text d-inline-block w-100 p-2">
-                                            <div class="course-title mb20 headline relative-position">
-                                                <h5>
-                                                    <a
-                                                        href="{{ route('courses.show', [$item->slug]) }}">{{ $item->title }}</a>
-                                                </h5>
-                                            </div>
-                                            <div class="course-meta d-inline-block w-100 ">
-                                                <div class="d-inline-block w-100 0 mt-2">
-                                                    <span class="course-category float-left">
-                                                        <a href="{{ route('courses.category', ['category' => $item->category->slug]) }}"
-                                                            class="bg-success text-decoration-none px-2 p-1">{{ $item->category->name }}</a>
-                                                    </span>
-                                                    <span class="course-author float-right">
-                                                        {{ $item->students()->count() }}
-                                                        @lang('labels.backend.dashboard.students')
-                                                    </span>
+                                            <div class="best-course-text d-inline-block w-100 p-2">
+                                                <div class="course-title mb20 headline relative-position">
+                                                    <h5>
+                                                        <a
+                                                            href="{{ route('courses.show', [$item->slug]) }}">{{ $item->title }}</a>
+                                                    </h5>
+                                                </div>
+                                                <div class="course-meta d-inline-block w-100 ">
+                                                    <div class="d-inline-block w-100 0 mt-2">
+                                                        <span class="course-category float-left">
+                                                            <a href="{{ route('courses.category', ['category' => $item->category->slug]) }}"
+                                                                class="bg-success text-decoration-none px-2 p-1">{{ $item->category->name }}</a>
+                                                        </span>
+                                                        <span class="course-author float-right">
+                                                            {{ $item->students()->count() }}
+                                                            @lang('labels.backend.dashboard.students')
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endforeach
                             @endif
                         @elseif(auth()->user()->hasRole('teacher'))

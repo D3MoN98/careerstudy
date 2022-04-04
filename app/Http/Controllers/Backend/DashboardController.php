@@ -86,11 +86,13 @@ class DashboardController extends Controller
                 $available_courses = auth()->user()->getAvailableCourses();
             }
 
-            $notices = new Notice;
-            $notices = $notices->getRelevantNotices();
+            $notice_ob = new Notice;
+            $notices = $notice_ob->getRelevantNotices();
+            $jobs = $notice_ob->getRelevantJobs();
+
         }
 
 
-        return view('backend.dashboard',compact('purchased_courses','students_count','recent_reviews','threads','purchased_bundles','teachers_count','courses_count','recent_orders','recent_contacts','pending_orders', 'subscribed_courses','subscribed_bundles', 'available_courses', 'notices'));
+        return view('backend.dashboard',compact('purchased_courses','students_count','recent_reviews','threads','purchased_bundles','teachers_count','courses_count','recent_orders','recent_contacts','pending_orders', 'subscribed_courses','subscribed_bundles', 'available_courses', 'notices', 'jobs'));
     }
 }

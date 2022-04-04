@@ -300,6 +300,7 @@ Route::resource('blogs', 'Admin\BlogController');
 // notice routes
 Route::group(['middleware' => 'role:administrator'], function () {
     Route::resource('notice', 'Admin\NoticeController');
+    Route::resource('job', 'Admin\NoticeController');
     Route::resource('college', 'Admin\CollegeController');
     Route::resource('college_stream', 'Admin\CollegeStreamController');
 });

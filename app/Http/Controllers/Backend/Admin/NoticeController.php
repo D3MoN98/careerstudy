@@ -13,9 +13,9 @@ class NoticeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $notices = Notice::all();
+        $notices = Notice::where('category', $request->segment(2))->get();
         return view('backend.notices.index', compact('notices'));
     }
 
@@ -37,12 +37,13 @@ class NoticeController extends Controller
      */
     public function store(Request $request)
     {
+        $segment = $request->segment(2);
         $notice = $request->all();
         $notice['user_id'] = auth()->user()->id;
 
         Notice::create($notice);
 
-        return redirect()->route('admin.notice.index')->withFlashSuccess(__('alerts.backend.general.created'));
+        return redirect()->route("admin.$segment.index")->withFlashSuccess(__('alerts.backend.general.created'));
     }
 
     /**
@@ -78,10 +79,11 @@ class NoticeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $segment = $request->segment(2);
         $notice = $request->all();
         Notice::find($id)->update($notice);
 
-        return redirect()->route('admin.notice.index')->withFlashSuccess(__('alerts.backend.general.updated'));
+        return redirect()->route("admin.$segment.index")->withFlashSuccess(__('alerts.backend.general.updated'));
     }
 
     /**
@@ -90,11 +92,12 @@ class NoticeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         Notice::find($id)->delete();
+        $segment = $request->segment(2);
 
-        return redirect()->route('admin.notice.index')->withFlashSuccess(__('alerts.backend.general.deleted'));
+        return redirect()->route("admin.$segment.index")->withFlashSuccess(__('alerts.backend.general.deleted'));
 
     }
 }
