@@ -90,6 +90,11 @@
 
         @if($logged_in_user->hasRole('student'))
         <tr>
+            <th>College Type</th>
+            <td>{{ucwords($user->student->college_type)}}</td>
+        </tr>
+        
+        <tr>
             <th>College</th>
             <td>{{$user->student->college->name}}</td>
         </tr>
@@ -102,6 +107,23 @@
         <tr>
             <th>Semester</th>
             <td>{{$user->student->semester}}</td>
+        </tr>
+        
+        @if ($user->student->college_type == 'college')
+        <tr>
+            <th>Honour/Pass Course</th>
+            <td>{{$user->student->honour_passcourse}}</td>
+        </tr>
+        @endif
+
+        <tr>
+            <th>Programme/Class</th>
+            <td>{{$user->student->programme_class->name ?? null}}</td>
+        </tr>
+
+        <tr>
+            <th>Subject/Category</th>
+            <td>{{$user->student->category_names()}}</td>
         </tr>
         @endif
     </table>

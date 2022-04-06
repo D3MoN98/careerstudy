@@ -1,8 +1,16 @@
 @extends('frontend.layouts.app'.config('theme_layout'))
 
-@section('title', ($blog->meta_title) ? $blog->meta_title : app_name() )
+@if (!is_null($blog->meta_title))
+@section('title', $blog->meta_title ? $blog->meta_title : app_name())
+@endif
+
+@if (!is_null($blog->meta_description))
 @section('meta_description', $blog->meta_description)
+@endif
+
+@if (!is_null($blog->meta_keywords))
 @section('meta_keywords', $blog->meta_keywords)
+@endif
 
 @section('content')
 

@@ -27,7 +27,7 @@ class Course extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['category_id', 'college_id', 'college_stream_id', 'semester', 'title', 'slug', 'description', 'price', 'course_image','course_video', 'start_date', 'published', 'free','featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'expire_at','strike'];
+    protected $fillable = ['category_id', 'college_type', 'college_id', 'college_stream_id', 'semester', 'programme_class_id', 'honour_passcourse', 'title', 'slug', 'description', 'price', 'course_image','course_video', 'start_date', 'published', 'free','featured', 'trending', 'popular', 'meta_title', 'meta_description', 'meta_keywords', 'expire_at','strike'];
 
     protected $appends = ['image'];
 
@@ -173,6 +173,11 @@ class Course extends Model
     public function college_stream()
     {
         return $this->belongsTo(CollegeStream::class);
+    }
+    
+    public function programme_class()
+    {
+        return $this->belongsTo(ProgrammeClass::class);
     }
 
     public function tests()

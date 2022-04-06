@@ -350,22 +350,43 @@ class User extends Authenticatable
             'college_id' => $student->college_id,
             'college_stream_id' => $student->college_stream_id,
             'semester' => $student->semester,
-        ])->get();
+            'programme_class_id' => $student->programme_class_id,
+        ]);
 
-        return $courses;
+        if ($student->college_type == 'college' && !is_null($student->honour_passcourse)) {
+            $courses->where('honour_passcourse', $student->honour_passcourse);
+        }
+
+        if (!is_null($student->category_id)) {
+            $courses->whereIn('category_id', explode(',', $student->category_id));
+        }
+
+        return $courses->get();
 
     }
 
     public function getFilteredavailableCourses($courses)
     {
         $student = auth()->user()->student;
-        return $courses->where(
+        $courses->where(
             [
                 'college_id' => $student->college_id,
                 'college_stream_id' => $student->college_stream_id,
                 'semester' => $student->semester,
+                'programme_class_id' => $student->programme_class_id,
             ]
         );
+
+        if ($student->college_type == 'college' && !is_null($student->honour_passcourse)) {
+            $courses->where('honour_passcourse', $student->honour_passcourse);
+        }
+
+        if (!is_null($student->category_id)) {
+            $courses->whereIn('category_id', explode(',', $student->category_id));
+        }
+
+        return $courses;
+
     }
 
     /**

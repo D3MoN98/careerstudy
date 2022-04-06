@@ -144,6 +144,7 @@ class RegisterController extends Controller
     public function studentDetailsInsert(Request $request)
     {
         $data = $request->all();
+
         // college details
         if (!is_int($data['college_id']) && !College::find($data['college_id'])) {
             $college = College::where('name', $data['college_id'])->first();
@@ -167,16 +168,14 @@ class RegisterController extends Controller
             $data['college_stream_id'] = $college_stream->id;
         }
 
-        Student::create([
-            'user_id' => auth()->user()->id,
-            'college_id' => $data['college_id'],
-            'college_stream_id' => $data['college_stream_id'],
-            'semester' => $data['semester'],
-        ]);
+        $data['user_id'] = auth()->user()->id;
+        $data['category_id'] = implode(',', $data['category_id']);
+
+        $student = Student::create($data);
 
         return response([
             'success' => true,
-            'otp' => $data
+            'data' => $student
         ]);
 
 

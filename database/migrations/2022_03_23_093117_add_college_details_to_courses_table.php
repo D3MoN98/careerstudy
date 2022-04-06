@@ -33,8 +33,8 @@ class AddCollegeDetailsToCoursesTable extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             $table->dropColumn('college_id');
-            // $table->dropColumn('college_stream_id');
-            // $table->dropColumn('semester');
+            $table->dropColumn('college_stream_id');
+            $table->dropColumn('semester');
         });
     }
 }

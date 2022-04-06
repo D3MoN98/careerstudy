@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Backend\Admin\CollegeController;
+use App\Http\Controllers\Backend\Admin\CollegeStreamController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\HomeController;
+use ParagonIE\Certainty\Fetch;
 
 /*
  * Global Routes
@@ -216,3 +219,8 @@ Route::post('add-to-wishlist','Backend\WishlistController@store')->name('add-to-
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
     Route::get('/{page?}', [HomeController::class, 'index'])->name('index');
 });
+
+
+// colleges route
+Route::get('college/type', [CollegeController::class, 'getCollegeByType'])->name('college_by_type');
+Route::get('college-stream/college', [CollegeStreamController::class, 'getCollegeStreamByCollegeId'])->name('colleges_stream_by_type');

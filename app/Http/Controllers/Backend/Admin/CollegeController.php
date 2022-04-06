@@ -95,4 +95,16 @@ class CollegeController extends Controller
         return redirect()->route('admin.college.index')->withFlashSuccess(__('alerts.backend.general.deleted'));
 
     }
+
+    /**
+     * Get list of colleges by type.
+     * @param Request $request
+     * @return json
+     */
+    public function getCollegeByType(Request $request)
+    {
+        $colleges = College::where('type', $request->type)->get();
+
+        return response()->json(['success' => true, 'data' => $colleges]);
+    }
 }

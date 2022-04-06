@@ -1605,6 +1605,7 @@ class ComposerStaticInit76bb34f2e31f84548d41c568bd7576a4
         'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
         'App\\Models\\OrderItem' => __DIR__ . '/../..' . '/app/Models/OrderItem.php',
         'App\\Models\\Page' => __DIR__ . '/../..' . '/app/Models/Page.php',
+        'App\\Models\\ProgrammeClass' => __DIR__ . '/../..' . '/app/Models/ProgrammeClass.php',
         'App\\Models\\Question' => __DIR__ . '/../..' . '/app/Models/Question.php',
         'App\\Models\\QuestionsOption' => __DIR__ . '/../..' . '/app/Models/QuestionsOption.php',
         'App\\Models\\Reason' => __DIR__ . '/../..' . '/app/Models/Reason.php',

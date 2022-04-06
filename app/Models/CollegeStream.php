@@ -9,5 +9,5 @@ class CollegeStream extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'college_id'];
 }

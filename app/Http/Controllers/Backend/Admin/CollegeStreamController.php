@@ -95,5 +95,17 @@ class CollegeStreamController extends Controller
          return redirect()->route('admin.college_stream.index')->withFlashSuccess(__('alerts.backend.general.deleted'));
  
      }
+
+    /**
+     * Get list of college streams by college id.
+     * @param Request $request
+     * @return json
+     */
+    public function getCollegeStreamByCollegeId(Request $request)
+    {
+        $college_streams = CollegeStream::where('college_id', $request->college_id)->orWhere('college_id', null)->get();
+
+        return response()->json(['success' => true, 'data' => $college_streams]);
+    }
  }
  

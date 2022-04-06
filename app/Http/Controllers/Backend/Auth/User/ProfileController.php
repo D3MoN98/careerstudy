@@ -7,6 +7,7 @@ use App\Repositories\Frontend\Auth\UserRepository;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 use App\Models\College;
 use App\Models\CollegeStream;
+use App\Models\Student;
 
 /**
  * Class ProfileController.
@@ -95,11 +96,10 @@ class ProfileController extends Controller
                 $request->college_stream_id = $college_stream->id;
             }
     
-            $student = auth()->user()->student;
-            $student->college_id = $request->college_id;
-            $student->college_stream_id = $request->college_stream_id;
-            $student->semester = $request->semester;
-            $student->save();
+            $student_data = $request->all();
+            $student_id = auth()->user()->student->id;
+            $student_data['category_id'] = implode(',', $student_data['category_id']);
+            Student::find($student_id)->update($student_data);
         }
 
 

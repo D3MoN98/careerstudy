@@ -238,6 +238,7 @@ return array(
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
     'App\\Models\\OrderItem' => $baseDir . '/app/Models/OrderItem.php',
     'App\\Models\\Page' => $baseDir . '/app/Models/Page.php',
+    'App\\Models\\ProgrammeClass' => $baseDir . '/app/Models/ProgrammeClass.php',
     'App\\Models\\Question' => $baseDir . '/app/Models/Question.php',
     'App\\Models\\QuestionsOption' => $baseDir . '/app/Models/QuestionsOption.php',
     'App\\Models\\Reason' => $baseDir . '/app/Models/Reason.php',

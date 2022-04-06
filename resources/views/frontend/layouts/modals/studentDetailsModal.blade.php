@@ -68,6 +68,16 @@
                         action="{{ route('frontend.auth.student-details') }}" method="post">
                         {!! csrf_field() !!}
                         <div class="form-group contact-info mb-2">
+                            <label for="college_type">College/University*</label>
+                            <select name="college_type" id="college_type" class="form-control mb-0 select2-college-type" required>
+                                <option></option>
+                                <option value="college">College</option>
+                                <option value="university">University</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group contact-info mb-2">
+                            <label for="college_type">Colleges/Universities*</label>
                             @php
                                 $colleges = App\Models\College::all();
                             @endphp
@@ -81,6 +91,7 @@
 
 
                         <div class="form-group contact-info mb-2">
+                            <label for="college_type">Stream*</label>
                             @php
                                 $college_streams = App\Models\CollegeStream::all();
                             @endphp
@@ -92,12 +103,51 @@
                             </select>
                         </div>
 
+
                         <div class="form-group contact-info mb-2">
-                            <select name="semester" id="semester" class="form-control select2" required>
+                            <label for="college_type">Honours/Pass Course*</label>
+                            <select name="honour_passcourse" id="honour_passcourse" class="form-control select2-honour-passcourse">
+                                <option></option>
+                                <option value="honours">Honours</option>
+                                <option value="pass_course">Pass Course</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group contact-info mb-2">
+                            <label for="college_type">Prgramme/Class*</label>
+                            @php
+                                $programme_classes = App\Models\ProgrammeClass::all();
+                            @endphp
+                            <select name="programme_class_id" id="programme_class_id" class="form-control select2-programme-class" required>
+                                <option></option>
+                                @foreach ($programme_classes as $programme_class)
+                                    <option value="{{ $programme_class->id }}">{{ $programme_class->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group contact-info mb-2">
+                            <label for="college_type">Semester*</label>
+
+                            <select name="semester" id="semester" class="form-control select2-semester" required>
                                 <option></option>
                                 @for ($i = 1; $i <= 8; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
+                            </select>
+                        </div>
+
+                        <div class="form-group contact-info mb-2">
+                            <label for="college_type">Subject/Category*</label>
+
+                            @php
+                                $subjects = App\Models\Category::all();
+                            @endphp
+                            <select name="category_id[]" id="category_id" data-placeholder="Select multiple subjects/categories" class="form-control select2-category-subject" required>
+                                <option></option>
+                                @foreach ($subjects as $subject)
+                                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -128,9 +178,25 @@
     {{-- select2 script --}}
     <script>
         $(document).ready(function() {
-            $(".select2").select2({
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $(".select2-college-type").select2({
                 dropdownParent: $("#studentDetailsModal  .modal-content"),
-                placeholder: "Select a semester"
+                placeholder: "Select College or university"
+            });
+
+            $(".select2-semester").select2({
+                dropdownParent: $("#studentDetailsModal  .modal-content"),
+                placeholder: "Select semester"
+            });
+
+            $(".select2-honour-passcourse").select2({
+                dropdownParent: $("#studentDetailsModal  .modal-content"),
+                placeholder: "Select hoour or passcourse"
             });
 
             $(".select2-tag-college").select2({
@@ -138,12 +204,28 @@
                 tags: true,
                 placeholder: "Select a college"
             });
+            
+            $(".select2-programme-class").select2({
+                dropdownParent: $("#studentDetailsModal  .modal-content"),
+                placeholder: "Select a programme/class"
+            });
 
             $(".select2-tag-college-stream").select2({
                 dropdownParent: $("#studentDetailsModal  .modal-content"),
                 tags: true,
                 placeholder: "Select a stream"
             });
+            
+            $(".select2-category-subject").attr('multiple', 'multiple');
+            $(".select2-category-subject" + " option")[0].remove();
+
+            $(".select2-category-subject").select2({
+                dropdownParent: $("#studentDetailsModal  .modal-content"),
+                multiple: true,
+                placeholder: "Select multiple subjects/categories"
+            });
+
+            $("#honour_passcourse").closest('.form-group').hide()
         });
 
         $('#studentDetailsForm').validate({
@@ -161,40 +243,114 @@
                 } else {
                     error.insertAfter($(element));
                 }
+            },
+            submitHandler: function (form) {
+
+                var $this = $("#studentDetailsForm");
+                $('.success-response').empty();
+
+                $.ajax({
+                    type: $this.attr('method'),
+                    url: $this.attr('action'),
+                    data: $this.serializeArray(),
+                    dataType: $this.data('type'),
+                    success: function(response) {
+                        if (response.success) {
+                            $('.success-response').html("Details successfully inserted");
+
+                            $("#college_id").empty().trigger('change')
+                            $("#college_stream_id").empty().trigger('change')
+                            $("#semester").empty().trigger('change')
+
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 3500);
+                        }
+                    },
+                    error: function(jqXHR) {
+
+                    }
+                });
+                return false; // required to block normal submit since you used ajax
             }
         })
     </script>
 
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
 
-        $('#studentDetailsForm').on('submit', function(e) {
+        $('#college_type').on('change', function(e) {
             e.preventDefault();
 
             var $this = $(this);
             $('.success-response').empty();
+            var type = $this.val();
+
+            if (type == 'university') {
+                $("#honour_passcourse").closest('.form-group').hide()
+            } else if(type == 'college') {
+                $("#honour_passcourse").closest('.form-group').show()
+            }
 
             $.ajax({
-                type: $this.attr('method'),
-                url: $this.attr('action'),
-                data: $this.serializeArray(),
-                dataType: $this.data('type'),
+                type: 'GET',
+                url: "{{ route('college_by_type') }}",
+                data: {type: type},
+                dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        $('.success-response').html("Details successfully inserted");
+                        $("#college_id").empty();
+                        $("#college_id").append(new Option('', '', false, false));
 
-                        $("#college_id").empty().trigger('change')
-                        $("#college_stream_id").empty().trigger('change')
-                        $("#semester").empty().trigger('change')
 
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 3500);
+                        response.data.forEach(element => {
+                            var option = new Option(element.name, element.id, false, false);
+                            $("#college_id").append(option);
+                        });
+
+                        // manually trigger the `select2:select` event
+                        $("#college_id").trigger({
+                            type: 'select2:select',
+                        });
+
+                        $("#college_id").trigger('change');
+                    }
+                },
+                error: function(jqXHR) {
+
+                }
+            });
+        });
+
+        $('#college_id').on('change', function(e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            $('.success-response').empty();
+            var college_id = $this.val();
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('colleges_stream_by_type') }}",
+                data: {college_id: college_id},
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        $("#college_stream_id").empty();
+                        $("#college_stream_id").append(new Option('', '', false, false));
+                        
+
+                        response.data.forEach(element => {
+                            var option = new Option(element.name, element.id, false, false);
+                            $("#college_stream_id").append(option);
+                        });
+
+                        // manually trigger the `select2:select` event
+                        $("#college_stream_id").trigger({
+                            type: 'select2:select',
+                        });
+
+                        $("#college_stream_id").trigger('change');
                     }
                 },
                 error: function(jqXHR) {

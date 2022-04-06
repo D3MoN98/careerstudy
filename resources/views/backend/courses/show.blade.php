@@ -77,22 +77,45 @@
                             <th>@lang('labels.backend.courses.fields.slug')</th>
                             <td>{{ $course->slug }}</td>
                         </tr>
+
+                        <tr>
+                            <th>College Type</th>
+                            <td>{{ucwords($course->college_type)}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>College</th>
+                            <td>{{$course->college->name}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>Stream</th>
+                            <td>{{$course->college_stream->name}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>Semester</th>
+                            <td>{{$course->semester}}</td>
+                        </tr>
+                        
+                        @if ($course->college_type == 'college')
+                        <tr>
+                            <th>Honour/Pass Course</th>
+                            <td>{{$course->honour_passcourse}}</td>
+                        </tr>
+                        @endif
+                
+                        <tr>
+                            <th>Programme/Class</th>
+                            <td>{{$course->programme_class->name ?? null}}</td>
+                        </tr>
+                
                         <tr>
                             <th>@lang('labels.backend.courses.fields.category')</th>
                             <td>{{ $course->category->name }}</td>
                         </tr>
-                        <tr>
-                            <th>College</th>
-                            <td>{{ $course->college->name ?? null }}</td>
-                        </tr>
-                        <tr>
-                            <th>Stream</th>
-                            <td>{{ $course->college_stream->name ?? null }}</td>
-                        </tr>
-                        <tr>
-                            <th>Semester</th>
-                            <td>{{ $course->semester ?? null }}</td>
-                        </tr>
+
+
                         <tr>
                             <th>@lang('labels.backend.courses.fields.description')</th>
                             <td>{!! $course->description !!}</td>
