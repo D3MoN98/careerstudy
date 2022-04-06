@@ -23,6 +23,7 @@
                             <th>@lang('labels.general.sr_no')</th>
                             <th>@lang('labels.general.id')</th>
                             <th>Title</th>
+                            <th>College</th>
                             <th>Created</th>
                             @if (request('show_deleted') == 1)
                                 <th>@lang('strings.backend.general.actions') &nbsp;</th>
@@ -41,6 +42,7 @@
                             <td>{{ $i }}</td>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name }}</td>
+                            <td>{{ $item->college->name ?? null }}</td>
                             <td>{{ $item->created_at->format('d M Y, h:i A') }}</td>
 
                             <td>

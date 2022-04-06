@@ -303,6 +303,7 @@ Route::group(['middleware' => 'role:administrator'], function () {
     Route::resource('job', 'Admin\NoticeController');
     Route::resource('college', 'Admin\CollegeController');
     Route::resource('college_stream', 'Admin\CollegeStreamController');
+    Route::resource('programme_class', 'Admin\ProgrammeClassController');
 });
 
 Route::get('get-blogs-data', ['uses' => 'Admin\BlogController@getData', 'as' => 'blogs.get_data']);

@@ -357,6 +357,13 @@
                 </a>
             </li>
             <li class="nav-item ">
+                <a class="nav-link {{ $request->segment(1) == 'programme_class' ? 'active' : '' }}"
+                   href="{{ route('admin.programme_class.index') }}">
+                    <i class="nav-icon icon-key"></i>
+                    <span class="title">Programmes/Classes</span>
+                </a>
+            </li>
+            <li class="nav-item ">
                 <a class="nav-link {{ $request->segment(1) == 'notice' ? 'active' : '' }}"
                    href="{{ route('admin.notice.index') }}">
                     <i class="nav-icon icon-key"></i>

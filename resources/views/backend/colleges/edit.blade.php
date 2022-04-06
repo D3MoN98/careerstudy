@@ -45,9 +45,19 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-lg-6 form-group">
+                <div class="col-12 form-group">
                     {!! Form::label('name', 'Name *', ['class' => 'control-label']) !!}
                     {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Name', 'required' => true]) !!}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 form-group">
+                    Type
+                    <select name="type" id="" class="form-control">
+                        <option value="college" {{ $college->type == 'college' ? 'selected' : '' }}>College</option>
+                        <option value="university" {{ $college->type == 'university' ? 'selected' : '' }}>University</option>
+                    </select>
                 </div>
             </div>
 

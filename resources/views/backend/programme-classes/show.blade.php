@@ -1,9 +1,9 @@
 @extends('backend.layouts.app')
-@section('title', 'College | '.app_name())
+@section('title', 'Programme Class | '.app_name())
 
 @push('after-styles')
     <style>
-        .college-detail-content p img{
+        .programme_class-detail-content p img{
             margin: 2px;
         }
         .label{
@@ -20,7 +20,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="page-title float-left mb-0">College</h3>
+            <h3 class="page-title float-left mb-0">Programme Class</h3>
         </div>
         <div class="card-body">
             <div class="row">
@@ -29,17 +29,12 @@
                         
                         <tr>
                             <th>Name</th>
-                            <td>{{ $college->name }}</td>
-                        </tr>
-                        
-                        <tr>
-                            <th>Type</th>
-                            <td>{{ $college->type }}</td>
+                            <td>{{ $programme_class->name }}</td>
                         </tr>
                         
                         <tr>
                             <th>Created At</th>
-                            <td>{{ $college->created_at->format('d M Y, h:i A') }}</td>
+                            <td>{{ $programme_class->created_at->format('d M Y, h:i A') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -48,7 +43,7 @@
             <!-- Tab panes -->
 
 
-            <a href="{{ route('admin.college.index') }}"
+            <a href="{{ route('admin.programme_class.index') }}"
                class="btn btn-default border">@lang('strings.backend.general.app_back_to_list')</a>
         </div>
     </div>

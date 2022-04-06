@@ -1,5 +1,5 @@
 @extends('backend.layouts.app')
-@section('title', 'College | '.app_name())
+@section('title', 'Programme Class | '.app_name())
 
 @push('after-styles')
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
@@ -29,38 +29,28 @@
         }
 
     </style>
+
 @endpush
 
 @section('content')
-    {!! Form::open(['method' => 'POST', 'route' => ['admin.college.store'], 'files' => true,]) !!}
+    {!! Form::model($programme_class, ['method' => 'PUT', 'route' => ['admin.programme_class.update', $programme_class->id], 'files' => true,]) !!}
 
     <div class="card">
         <div class="card-header">
-            <h3 class="page-title float-left mb-0">College</h3>
+            <h3 class="page-title float-left mb-0">Programme Class</h3>
             <div class="float-right">
-                <a href="{{ route('admin.college.index') }}"
-                   class="btn btn-success">View Colleges</a>
+                <a href="{{ route('admin.programme_class.index') }}"
+                   class="btn btn-success">View Programme Classs</a>
             </div>
         </div>
-
         <div class="card-body">
             <div class="row">
-                <div class="col-12 form-group">
+                <div class="col-12 col-lg-6 form-group">
                     {!! Form::label('name', 'Name *', ['class' => 'control-label']) !!}
                     {!! Form::text('name', old('name'), ['class' => 'form-control', 'placeholder' => 'Name', 'required' => true]) !!}
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-12 form-group">
-                    Type
-                    <select name="type" id="" class="form-control">
-                        <option value="college">College</option>
-                        <option value="university">University</option>
-                    </select>
-                </div>
-            </div>
-            
             <div class="row">
 
                 <div class="col-md-12 text-center form-group">
@@ -76,9 +66,11 @@
 
         </div>
     </div>
+    {!! Form::close() !!}
 
 @endsection
 
+
 @push('after-scripts')
-    <script src="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+<script src="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
 @endpush

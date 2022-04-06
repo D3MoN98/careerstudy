@@ -52,6 +52,21 @@
             </div>
 
             <div class="row">
+                <div class="col-12 form-group">
+                    College/University
+                    @php
+                        $colleges = App\Models\College::all();
+                    @endphp
+                    <select name="college_id" id="college_id" class="form-control mb-0 select2-tag-college" required>
+                        <option></option>
+                        @foreach ($colleges as $college)
+                            <option value="{{ $college->id }}" {{ $college_stream->college_id == $college->id ? 'selected' : ''}}>{{ $college->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
 
                 <div class="col-md-12 text-center form-group">
                     <button type="submit" class="btn btn-info waves-effect waves-light ">
@@ -73,4 +88,14 @@
 
 @push('after-scripts')
 <script src="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+
+<script>
+    $(document).ready(function() {
+
+        $(".select2-tag-college").select2({
+            placeholder: "Select a college"
+        });
+        
+    });
+</script>
 @endpush

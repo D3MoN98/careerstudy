@@ -10,4 +10,14 @@ class CollegeStream extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'college_id'];
+
+    /**
+     * Get the college that owns the CollegeStream
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function college()
+    {
+        return $this->belongsTo(College::class);
+    }
 }

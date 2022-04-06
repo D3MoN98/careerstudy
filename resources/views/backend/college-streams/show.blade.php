@@ -33,6 +33,11 @@
                         </tr>
                         
                         <tr>
+                            <th>College</th>
+                            <td>{{ $college_stream->college->name ?? null }}</td>
+                        </tr>
+                        
+                        <tr>
                             <th>Created At</th>
                             <td>{{ $college_stream->created_at->format('d M Y, h:i A') }}</td>
                         </tr>
